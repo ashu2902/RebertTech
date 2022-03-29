@@ -1,0 +1,119 @@
+{
+  "project_info": {
+    "project_number": "428604458899",
+    "firebase_url": "https://property-evaluation-dev-default-rtdb.firebaseio.com",
+    "project_id": "property-evaluation-dev",
+    "storage_bucket": "property-evaluation-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:428604458899:android:cc41c8589ea11d2bf40a66",
+        "android_client_info": {
+          "package_name": "com.example.makarand_rajendra"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "428604458899-58cjf4sfagtu5t6d80jgig381i5dmtf5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8O3h8AfK07lbVBNMqGAhR2A9w1hgRa78"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "428604458899-58cjf4sfagtu5t6d80jgig381i5dmtf5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "428604458899-ocd890sk1vbvdftuhgk02qkfir9sl6af.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.makarandRajendra"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:428604458899:android:b1cca994dd45fba7f40a66",
+        "android_client_info": {
+          "package_name": "com.example.property_valuation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "428604458899-58cjf4sfagtu5t6d80jgig381i5dmtf5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8O3h8AfK07lbVBNMqGAhR2A9w1hgRa78"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "428604458899-58cjf4sfagtu5t6d80jgig381i5dmtf5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "428604458899-ocd890sk1vbvdftuhgk02qkfir9sl6af.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.makarandRajendra"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:428604458899:android:1e5689ba9665f064f40a66",
+        "android_client_info": {
+          "package_name": "com.kodeit.makarand_rajendra_valuation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "428604458899-58cjf4sfagtu5t6d80jgig381i5dmtf5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8O3h8AfK07lbVBNMqGAhR2A9w1hgRa78"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "428604458899-58cjf4sfagtu5t6d80jgig381i5dmtf5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "428604458899-ocd890sk1vbvdftuhgk02qkfir9sl6af.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.makarandRajendra"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
