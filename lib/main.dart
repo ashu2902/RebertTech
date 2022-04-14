@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
         if (!currentFocus.hasPrimaryFocus) {
           currentFocus.unfocus();
@@ -63,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
       if (FirebaseAuth.instance.currentUser != null) {
         Timer(
           Duration(seconds: 0),
-              () => Navigator.push(
+          () => Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => Dashboard()),
           ),
@@ -188,7 +188,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
                     //if valid email
                     bool emailValid = RegExp(
-                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                         .hasMatch(email);
                     if (email.isEmpty) {
                       final snackBar = SnackBar(
@@ -212,7 +212,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     if (password.length < 6) {
                       final snackBar = SnackBar(
                           content:
-                          Text('Length of password must be minimum 6'));
+                              Text('Length of password must be minimum 6'));
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       return;
                     }
