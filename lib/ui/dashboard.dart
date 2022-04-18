@@ -21,9 +21,11 @@ class Dashboard extends StatefulWidget {
   @override
   _DashboardState createState() => _DashboardState();
 }
+
 double? lat, lon;
 List latitudes = [];
 List longitudes = [];
+
 class _DashboardState extends State<Dashboard> {
   static const String _kLocationServicesDisabledMessage =
       'Location services are disabled.';
@@ -41,15 +43,14 @@ class _DashboardState extends State<Dashboard> {
 
   Iterable markers = [];
 
-  Iterable _markers = Iterable.generate(latitudes.length, (index) {
+  final Iterable _markers = Iterable.generate(latitudes.length, (index) {
     return Marker(
         markerId: MarkerId(AppConstant.list[index]['id']),
         position: LatLng(
           latitudes[index],
           longitudes[index],
         ),
-        infoWindow: InfoWindow(title: AppConstant.list[index]["title"])
-    );
+        infoWindow: InfoWindow(title: AppConstant.list[index]["title"]));
   });
   DocumentReference userReference = FirebaseFirestore.instance
       .collection('Users')
@@ -79,6 +80,7 @@ class _DashboardState extends State<Dashboard> {
   Future<void> _signOut() async {
     await _auth.signOut();
   }
+
   List lists = [];
   List eachList = [];
   List caseIdList = [];
@@ -90,44 +92,42 @@ class _DashboardState extends State<Dashboard> {
     super.initState();
     _toggleServiceStatusStream();
     _getCurrentPosition();
-
   }
+
   Future<void> getProfile() async {
-    CollectionReference docRef = FirebaseFirestore.instance.collection('assigned_cases');
+    CollectionReference docRef =
+        FirebaseFirestore.instance.collection('assigned_cases');
     QuerySnapshot snapshot = await docRef.get();
     final messages = snapshot.docs;
-    setState(() {
-
-    });
+    setState(() {});
     for (var message in messages) {
       if (message.get('valuer') == userReference) {
         DocumentReference caseReference = message.get('caseId');
         lists.add(caseReference);
         print(caseReference.get());
       }
-       print(message.get('valuer'));
+      print(message.get('valuer'));
     }
-    CollectionReference reference = FirebaseFirestore.instance
-        .collection('Cases');
+    CollectionReference reference =
+        FirebaseFirestore.instance.collection('Cases');
     QuerySnapshot snapshot1 = await reference.get();
     final messages1 = snapshot1.docs;
     for (var message in messages1) {
-      if (lists.contains(message.reference)&&(message.get('caseStatus')=='Assigned to Valuer'|| message.get('caseStatus')=='Partially Done'|| message.get('caseStatus')=='Visit Postponed')) {
+      if (lists.contains(message.reference) &&
+          (message.get('caseStatus') == 'Assigned to Valuer' ||
+              message.get('caseStatus') == 'Partially Done' ||
+              message.get('caseStatus') == 'Visit Postponed')) {
         eachList.add(message.data());
 
         caseIdList.add(message.reference.id);
-        print(eachList);
       }
     }
-    setState(() {
-
-    });
-
+    print("This is eachList ${eachList[1]["dateOfInspection"]}");
+    setState(() {});
   }
+
   @override
   Widget build(BuildContext context) {
-
-
     Set<Marker> markers = {};
     return WillPopScope(
       onWillPop: () async {
@@ -202,7 +202,6 @@ class _DashboardState extends State<Dashboard> {
                   icon: Icon(Icons.list_alt_outlined),
                   text: 'List View',
                 ),
-
               ],
             ),
             elevation: 20,
@@ -211,57 +210,57 @@ class _DashboardState extends State<Dashboard> {
           body: TabBarView(
             children: [
               Container(
-               child: ListView.builder(
-                   itemCount: eachList.length,
-                   itemBuilder: (context, index) {
-                     List contacts = ['', ''];
-                     List names = [];
-                     List titles = [];
-                     names.clear();
-                     customerName = '';
-                     names = eachList[index]['borrowerNames'];
-                     for (int i = 0; i < names.length; i++) {
-                       customerName = customerName +
-                           names[i]['title'] +
-                           ' ' +
-                           names[i]['fullName'] +
-                           ', ';
-                     }
-                     names.clear();
-                     contacts = eachList[index]['contactNo'];
-                     Timestamp timestamp =
-                     eachList[index]['dateOfInspection'];
-                     DateTime dateTime =
-                     DateTime.fromMicrosecondsSinceEpoch(
-                         timestamp.microsecondsSinceEpoch);
-                     String dateOfInspection =
-                         dateTime.day.toString() +
-                             '/' +
-                             dateTime.month.toString() +
-                             '/' +
-                             dateTime.year.toString() +
-                             ' ' +
-                             dateTime.hour.toString() +
-                             ':' +
-                             dateTime.minute.toString() +
-                             ':' +
-                             dateTime.second.toString();
-                     customerPhone = contacts[0];
-                     if (contacts.length > 1) {
-                       customerPhone =
-                           customerPhone + ' / ' + contacts[1];
-                     }
-                     return returnCaseItem(
-                         context,
-                         index,
-                         eachList[index]['bankName'],
-                         caseIdList[index],
-                         customerName,
-                         eachList[index]['typeOfAsset'],
-                         dateOfInspection,
-                         customerPhone,
-                         eachList[index]['address'],eachList[index]);
-                   }),
+                child: ListView.builder(
+                    itemCount: eachList.length,
+                    itemBuilder: (context, index) {
+                      List contacts = ['', ''];
+                      List names = [];
+                      List titles = [];
+                      names.clear();
+                      customerName = '';
+                      names = eachList[index]['borrowerNames'];
+                      for (int i = 0; i < names.length; i++) {
+                        customerName = customerName +
+                            names[i]['title'] +
+                            ' ' +
+                            names[i]['fullName'] +
+                            ', ';
+                      }
+                      names.clear();
+                      contacts = eachList[index]['contactNo'];
+                      Timestamp timestamp =
+                          eachList[index]['dateOfInspection'] == ""
+                              ? Timestamp(0, 0)
+                              : eachList[index]['dateOfInspection'];
+                      DateTime dateTime = DateTime.fromMicrosecondsSinceEpoch(
+                          timestamp.microsecondsSinceEpoch);
+                      String dateOfInspection = dateTime.day.toString() +
+                          '/' +
+                          dateTime.month.toString() +
+                          '/' +
+                          dateTime.year.toString() +
+                          ' ' +
+                          dateTime.hour.toString() +
+                          ':' +
+                          dateTime.minute.toString() +
+                          ':' +
+                          dateTime.second.toString();
+                      customerPhone = contacts.isEmpty ? "" : contacts[0];
+                      if (contacts.length > 1) {
+                        customerPhone = customerPhone + ' / ' + contacts[1];
+                      }
+                      return returnCaseItem(
+                          context,
+                          index,
+                          eachList[index]['bankName'],
+                          caseIdList[index],
+                          customerName == "" ? "Customer Name" : customerName,
+                          eachList[index]['typeOfAsset'],
+                          dateOfInspection == "" ? "Date" : dateOfInspection,
+                          customerPhone == "" ? "9999999999" : customerPhone,
+                          eachList[index]['address'] ?? ["one"],
+                          eachList[index] ?? ["one"]);
+                    }),
               ),
             ],
           ),
@@ -287,8 +286,6 @@ class _DashboardState extends State<Dashboard> {
       lon = position.longitude;
     });
   }
-
-
 
   Future<bool> _handlePermission() async {
     bool serviceEnabled;
@@ -362,31 +359,31 @@ class _DashboardState extends State<Dashboard> {
       final serviceStatusStream = _geolocatorPlatform.getServiceStatusStream();
       _serviceStatusStreamSubscription =
           serviceStatusStream.handleError((error) {
-            _serviceStatusStreamSubscription?.cancel();
-            _serviceStatusStreamSubscription = null;
-          }).listen((serviceStatus) {
-            String serviceStatusValue;
-            if (serviceStatus == ServiceStatus.enabled) {
-              if (positionStreamStarted) {
-                _toggleListening();
-              }
-              serviceStatusValue = 'enabled';
-            } else {
-              if (_positionStreamSubscription != null) {
-                setState(() {
-                  _positionStreamSubscription?.cancel();
-                  _positionStreamSubscription = null;
-                  _updatePositionList(
-                      _PositionItemType.log, 'Position Stream has been canceled');
-                });
-              }
-              serviceStatusValue = 'disabled';
-            }
-            _updatePositionList(
-              _PositionItemType.log,
-              'Location service has been $serviceStatusValue',
-            );
-          });
+        _serviceStatusStreamSubscription?.cancel();
+        _serviceStatusStreamSubscription = null;
+      }).listen((serviceStatus) {
+        String serviceStatusValue;
+        if (serviceStatus == ServiceStatus.enabled) {
+          if (positionStreamStarted) {
+            _toggleListening();
+          }
+          serviceStatusValue = 'enabled';
+        } else {
+          if (_positionStreamSubscription != null) {
+            setState(() {
+              _positionStreamSubscription?.cancel();
+              _positionStreamSubscription = null;
+              _updatePositionList(
+                  _PositionItemType.log, 'Position Stream has been canceled');
+            });
+          }
+          serviceStatusValue = 'disabled';
+        }
+        _updatePositionList(
+          _PositionItemType.log,
+          'Location service has been $serviceStatusValue',
+        );
+      });
     }
   }
 
@@ -397,9 +394,9 @@ class _DashboardState extends State<Dashboard> {
         _positionStreamSubscription?.cancel();
         _positionStreamSubscription = null;
       }).listen((position) => _updatePositionList(
-        _PositionItemType.position,
-        position.toString(),
-      ));
+            _PositionItemType.position,
+            position.toString(),
+          ));
       _positionStreamSubscription?.pause();
     }
 

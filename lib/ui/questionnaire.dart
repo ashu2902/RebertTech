@@ -69,12 +69,12 @@ String noOfWaterTanks = '';
 String compoundWall = '';
 String flooringInDev = '';
 String boreWell = '';
-String noOfSteps='';
-String extraInfo1='';
-String extraInfo2='';
-String extraInfo3='';
-String extraInfo4='';
-String extraInfo5='';
+String noOfSteps = '';
+String extraInfo1 = '';
+String extraInfo2 = '';
+String extraInfo3 = '';
+String extraInfo4 = '';
+String extraInfo5 = '';
 String noOfGate = '';
 
 void getVisitDetail(
@@ -111,11 +111,18 @@ void getVisitDetail(
 class _QuestionnaireState extends State<Questionnaire>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  final List<String> typesOfStairs =[
-    'type of stairs','RCC', 'Ms Steel', 'Wooden'
+  final List<String> typesOfStairs = [
+    'type of stairs',
+    'RCC',
+    'Ms Steel',
+    'Wooden'
   ];
-  final List<String> typesOfRailings =[
-    'type of railings','RCC', 'MS', 'Wooden', 'SS'
+  final List<String> typesOfRailings = [
+    'type of railings',
+    'RCC',
+    'MS',
+    'Wooden',
+    'SS'
   ];
   final List<String> _units = [
     "Sq. Ft",
@@ -154,10 +161,20 @@ class _QuestionnaireState extends State<Questionnaire>
     'Glass',
     'Fiber'
   ];
-  final List<String> typesOfDocuments=[
-    'Sell DeeD', 'Lease Deed', 'Search report', 'Building Permission and Commencement Letter',
-    'Completion/ Occupation Certificate', 'NA order', 'Sanctioned Layout Plan', '7/12 Extract',
-    'PTR (Namuna number 8)', 'Land Map', 'Deed of Declaration', 'Invoice of Machinery', 'Balance Sheet'
+  final List<String> typesOfDocuments = [
+    'Sell DeeD',
+    'Lease Deed',
+    'Search report',
+    'Building Permission and Commencement Letter',
+    'Completion/ Occupation Certificate',
+    'NA order',
+    'Sanctioned Layout Plan',
+    '7/12 Extract',
+    'PTR (Namuna number 8)',
+    'Land Map',
+    'Deed of Declaration',
+    'Invoice of Machinery',
+    'Balance Sheet'
   ];
   final List<String> typesOfPipes = [
     'select',
@@ -175,16 +192,18 @@ class _QuestionnaireState extends State<Questionnaire>
     'Fittings',
     'Interior'
   ];
-  final List<String> roofingTypes=[
-    'RCC Slab', 'Slanted MS Truss with A.C. sheet', 'Slanted MS Truss with G.I. sheet'
+  final List<String> roofingTypes = [
+    'RCC Slab',
+    'Slanted MS Truss with A.C. sheet',
+    'Slanted MS Truss with G.I. sheet'
   ];
   int stair = 0;
-  int rail=0;
-  String typeOfStair='', typeOfRailing='';
-  int slab=0;
-  String typeOfRoofing='';
-  int doc=0;
-  String docValue='';
+  int rail = 0;
+  String typeOfStair = '', typeOfRailing = '';
+  int slab = 0;
+  String typeOfRoofing = '';
+  int doc = 0;
+  String docValue = '';
   int work = 0;
   String workValue = '';
   int tank = 0;
@@ -208,7 +227,7 @@ class _QuestionnaireState extends State<Questionnaire>
   int _plotSizeInt = 0;
   int _bupInt = 0;
   int _mbupInt = 0;
-  String noOfFloors='';
+  String noOfFloors = '';
   String mbupholder = '';
   String mbupValue = 'Sq. Ft';
   String bupHolder = '';
@@ -225,7 +244,7 @@ class _QuestionnaireState extends State<Questionnaire>
   late Map<String, dynamic> areaLocationMap = {};
   late Map<String, dynamic> documentsMap = {};
   late Map<String, dynamic> valuationDetailMap = {};
-  late Map<String, dynamic> propertyDetails ={};
+  late Map<String, dynamic> propertyDetails = {};
   late File _image;
   late String url, documentName = '';
   late String downloadURL = '';
@@ -238,9 +257,10 @@ class _QuestionnaireState extends State<Questionnaire>
       typeHolder = propertyType;
     });
   }
+
   Future getImage() async {
     PickedFile? image =
-    await ImagePicker().getImage(source: ImageSource.gallery);
+        await ImagePicker().getImage(source: ImageSource.gallery);
     if (image != null) {
       setState(() {
         _image = File(image.path);
@@ -256,7 +276,7 @@ class _QuestionnaireState extends State<Questionnaire>
     } else {
       String filename = basename(_image.path);
       firebase_storage.Reference ref =
-      firebase_storage.FirebaseStorage.instance.ref().child(filename);
+          firebase_storage.FirebaseStorage.instance.ref().child(filename);
       /*await firebase_storage.FirebaseStorage.instance
               .ref(filename)
               .putFile(_image);*/
@@ -266,12 +286,13 @@ class _QuestionnaireState extends State<Questionnaire>
           .child('propertyImages/$filename')
           .putFile(_image);
       var downUrl =
-      await (await task.whenComplete(() => null)).ref.getDownloadURL();
+          await (await task.whenComplete(() => null)).ref.getDownloadURL();
       url = downUrl.toString();
       print(url);
       return url;
     }
   }
+
   TextEditingController documentController = TextEditingController(text: '');
   bool dataAdded = false;
   Future<bool> setVisitDetail() async {
@@ -334,6 +355,7 @@ class _QuestionnaireState extends State<Questionnaire>
     });
     return dataAdded;
   }
+
   Future<bool> setPropertyDetail() async {
     print(propertyDetails);
     var arealocref = FirebaseFirestore.instance
@@ -341,9 +363,7 @@ class _QuestionnaireState extends State<Questionnaire>
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .collection(caseId)
         .doc('Property Detail');
-    await arealocref
-        .set(propertyDetails)
-        .whenComplete(() => dataAdded = true);
+    await arealocref.set(propertyDetails).whenComplete(() => dataAdded = true);
     setState(() {
       dataAdded = true;
     });
@@ -371,7 +391,7 @@ class _QuestionnaireState extends State<Questionnaire>
     Future getImage() async {
       FilePickerResult? image = await FilePicker.platform.pickFiles(
         type: FileType.custom,
-        allowedExtensions: ['pdf'],
+        allowedExtensions: ['pdf', 'jpg'],
       );
       if (image != null) {
         setState(() {
@@ -786,7 +806,7 @@ class _QuestionnaireState extends State<Questionnaire>
                               initialValue: extraInfo1,
                               keyboardType: TextInputType.text,
                               onChanged: (value) {
-                                extraInfo1= value;
+                                extraInfo1 = value;
                               },
                               decoration: const InputDecoration(
                                 hintText: 'More Info',
@@ -797,19 +817,19 @@ class _QuestionnaireState extends State<Questionnaire>
                                     vertical: 20.0, horizontal: 20.0),
                                 border: OutlineInputBorder(
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(20.0)),
+                                      BorderRadius.all(Radius.circular(20.0)),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
                                       color: Colors.white, width: 1.0),
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(20.0)),
+                                      BorderRadius.all(Radius.circular(20.0)),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
                                       color: Colors.blue, width: 2.0),
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(20.0)),
+                                      BorderRadius.all(Radius.circular(20.0)),
                                 ),
                               ),
                             ),
@@ -1408,7 +1428,7 @@ class _QuestionnaireState extends State<Questionnaire>
                               initialValue: extraInfo2,
                               keyboardType: TextInputType.text,
                               onChanged: (value) {
-                                extraInfo2= value;
+                                extraInfo2 = value;
                               },
                               decoration: const InputDecoration(
                                 hintText: 'More Info',
@@ -1419,19 +1439,19 @@ class _QuestionnaireState extends State<Questionnaire>
                                     vertical: 20.0, horizontal: 20.0),
                                 border: OutlineInputBorder(
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(20.0)),
+                                      BorderRadius.all(Radius.circular(20.0)),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
                                       color: Colors.white, width: 1.0),
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(20.0)),
+                                      BorderRadius.all(Radius.circular(20.0)),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
                                       color: Colors.blue, width: 2.0),
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(20.0)),
+                                      BorderRadius.all(Radius.circular(20.0)),
                                 ),
                               ),
                             ),
@@ -1534,18 +1554,20 @@ class _QuestionnaireState extends State<Questionnaire>
                                     ),
                                     SizedBox(
                                       width:
-                                      MediaQuery.of(context).size.width / 3,
+                                          MediaQuery.of(context).size.width / 3,
                                       child: Row(
                                         children: [
-                                          Flexible(child: Text('$latitude'+'/ '+ ' $longitude')),
+                                          Flexible(
+                                              child: Text('$latitude' +
+                                                  '/ ' +
+                                                  ' $longitude')),
                                         ],
                                       ),
                                     ),
-
                                   ],
                                 ),
                               ],
-                            ),          
+                            ),
                           ),
                         ),
                         ElevatedButton(
@@ -1651,7 +1673,7 @@ class _QuestionnaireState extends State<Questionnaire>
                   }
                   if (snapshot.data!.exists) {
                     final message = snapshot.data!;
-                    
+
                     east = message.get('E');
                     west = message.get('W');
                     north = message.get('N');
@@ -1709,14 +1731,19 @@ class _QuestionnaireState extends State<Questionnaire>
                                     child: SizedBox(
                                       width: MediaQuery.of(context).size.width,
                                       child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+                                        padding: const EdgeInsets.fromLTRB(
+                                            15, 10, 15, 10),
                                         child: Container(
-                                          margin: const EdgeInsets.fromLTRB(15, 10, 15, 0),
-                                          width: MediaQuery.of(context).size.width,
+                                          margin: const EdgeInsets.fromLTRB(
+                                              15, 10, 15, 0),
+                                          width:
+                                              MediaQuery.of(context).size.width,
                                           height: 60,
-                                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 10.0),
                                           decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(20),
+                                            borderRadius:
+                                                BorderRadius.circular(20),
                                             border: Border.all(
                                                 color: Colors.blue,
                                                 style: BorderStyle.solid,
@@ -1726,29 +1753,35 @@ class _QuestionnaireState extends State<Questionnaire>
                                             child: DropdownButton(
                                               focusColor: Colors.blue,
                                               dropdownColor: Colors.white,
-                                              value:
-                                              doc == null ? null : typesOfDocuments[doc],
+                                              value: doc == null
+                                                  ? null
+                                                  : typesOfDocuments[doc],
                                               underline: Container(
                                                 height: 0,
                                               ),
                                               items: typesOfDocuments
                                                   .map(
-                                                    (String value) => DropdownMenuItem<String>(
-                                                  value: value,
-                                                  child: Text(
-                                                    value,
-                                                    style: const TextStyle(
-                                                        color: Colors.black, fontSize: 14),
-                                                  ),
-                                                ),
-                                              )
+                                                    (String value) =>
+                                                        DropdownMenuItem<
+                                                            String>(
+                                                      value: value,
+                                                      child: Text(
+                                                        value,
+                                                        style: const TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 14),
+                                                      ),
+                                                    ),
+                                                  )
                                                   .toList(),
                                               isExpanded: true,
                                               onChanged: (value) {
                                                 setState(() {
-                                                  doc=
-                                                      typesOfDocuments.indexOf(value.toString());
-                                                  documentName = value.toString();
+                                                  doc =
+                                                      typesOfDocuments.indexOf(
+                                                          value.toString());
+                                                  documentName =
+                                                      value.toString();
                                                 });
                                               },
                                             ),
@@ -1921,14 +1954,17 @@ class _QuestionnaireState extends State<Questionnaire>
                                     child: SizedBox(
                                       width: MediaQuery.of(context).size.width,
                                       child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+                                        padding: const EdgeInsets.fromLTRB(
+                                            15, 10, 15, 10),
                                         child: Center(
                                           child: Padding(
-                                            padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+                                            padding: const EdgeInsets.fromLTRB(
+                                                30, 10, 30, 10),
                                             child: Column(
                                               children: [
                                                 Padding(
-                                                  padding: const EdgeInsets.all(10.0),
+                                                  padding: const EdgeInsets.all(
+                                                      10.0),
                                                   child: Icon(
                                                     Icons.camera_alt_outlined,
                                                     color: Colors.blue,
@@ -1936,13 +1972,23 @@ class _QuestionnaireState extends State<Questionnaire>
                                                   ),
                                                 ),
                                                 SizedBox(
-                                                  width: MediaQuery.of(context).size.width / 2,
-                                                  height: MediaQuery.of(context).size.height / 20,
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width /
+                                                      2,
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height /
+                                                      20,
                                                   child: ElevatedButton(
-                                                    style: ElevatedButton.styleFrom(
+                                                    style: ElevatedButton
+                                                        .styleFrom(
                                                       primary: Colors.blue,
-                                                      shape: RoundedRectangleBorder(
-                                                        borderRadius: BorderRadius.circular(30),
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(30),
                                                       ),
                                                     ),
                                                     onPressed: () async {
@@ -1950,16 +1996,21 @@ class _QuestionnaireState extends State<Questionnaire>
                                                     },
                                                     child: Text(
                                                       "Add",
-                                                      style:
-                                                      TextStyle(fontSize: 14, fontFamily: "BonaNova"),
+                                                      style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontFamily:
+                                                              "BonaNova"),
                                                     ),
                                                   ),
                                                 ),
                                                 Padding(
-                                                  padding: const EdgeInsets.all(15.0),
+                                                  padding: const EdgeInsets.all(
+                                                      15.0),
                                                   child: Row(
                                                     children: [
-                                                      Flexible(child: Text('$imagePicked')),
+                                                      Flexible(
+                                                          child: Text(
+                                                              '$imagePicked')),
                                                     ],
                                                   ),
                                                 ),
@@ -2102,7 +2153,7 @@ class _QuestionnaireState extends State<Questionnaire>
                                       ),
                                       Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
+                                            MainAxisAlignment.spaceEvenly,
                                         children: [
                                           Text(
                                             'NE :',
@@ -2110,13 +2161,13 @@ class _QuestionnaireState extends State<Questionnaire>
                                           ),
                                           Container(
                                             width: MediaQuery.of(context)
-                                                .size
-                                                .width /
+                                                    .size
+                                                    .width /
                                                 1.7,
                                             child: TextFormField(
                                               initialValue: northEast,
                                               keyboardType:
-                                              TextInputType.multiline,
+                                                  TextInputType.multiline,
                                               onChanged: (value) {
                                                 northEast = value;
                                               },
@@ -2126,7 +2177,7 @@ class _QuestionnaireState extends State<Questionnaire>
                                       ),
                                       Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
+                                            MainAxisAlignment.spaceEvenly,
                                         children: [
                                           Text(
                                             'NW :',
@@ -2134,13 +2185,13 @@ class _QuestionnaireState extends State<Questionnaire>
                                           ),
                                           Container(
                                             width: MediaQuery.of(context)
-                                                .size
-                                                .width /
+                                                    .size
+                                                    .width /
                                                 1.7,
                                             child: TextFormField(
                                               initialValue: northWest,
                                               keyboardType:
-                                              TextInputType.multiline,
+                                                  TextInputType.multiline,
                                               onChanged: (value) {
                                                 northWest = value;
                                               },
@@ -2150,7 +2201,7 @@ class _QuestionnaireState extends State<Questionnaire>
                                       ),
                                       Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
+                                            MainAxisAlignment.spaceEvenly,
                                         children: [
                                           Text(
                                             'SE :',
@@ -2158,15 +2209,15 @@ class _QuestionnaireState extends State<Questionnaire>
                                           ),
                                           Container(
                                             width: MediaQuery.of(context)
-                                                .size
-                                                .width /
+                                                    .size
+                                                    .width /
                                                 1.7,
                                             child: TextFormField(
                                               initialValue: southEast,
                                               keyboardType:
-                                              TextInputType.multiline,
+                                                  TextInputType.multiline,
                                               onChanged: (value) {
-                                                southEast= value;
+                                                southEast = value;
                                               },
                                             ),
                                           )
@@ -2174,7 +2225,7 @@ class _QuestionnaireState extends State<Questionnaire>
                                       ),
                                       Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
+                                            MainAxisAlignment.spaceEvenly,
                                         children: [
                                           const Text(
                                             'SW:',
@@ -2182,13 +2233,13 @@ class _QuestionnaireState extends State<Questionnaire>
                                           ),
                                           Container(
                                             width: MediaQuery.of(context)
-                                                .size
-                                                .width /
+                                                    .size
+                                                    .width /
                                                 1.7,
                                             child: TextFormField(
                                               initialValue: southWest,
                                               keyboardType:
-                                              TextInputType.multiline,
+                                                  TextInputType.multiline,
                                               onChanged: (value) {
                                                 southWest = value;
                                               },
@@ -2211,7 +2262,7 @@ class _QuestionnaireState extends State<Questionnaire>
                               initialValue: extraInfo3,
                               keyboardType: TextInputType.text,
                               onChanged: (value) {
-                                extraInfo3= value;
+                                extraInfo3 = value;
                               },
                               decoration: const InputDecoration(
                                 hintText: 'More Info',
@@ -2222,19 +2273,19 @@ class _QuestionnaireState extends State<Questionnaire>
                                     vertical: 20.0, horizontal: 20.0),
                                 border: OutlineInputBorder(
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(20.0)),
+                                      BorderRadius.all(Radius.circular(20.0)),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
                                       color: Colors.white, width: 1.0),
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(20.0)),
+                                      BorderRadius.all(Radius.circular(20.0)),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
                                       color: Colors.blue, width: 2.0),
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(20.0)),
+                                      BorderRadius.all(Radius.circular(20.0)),
                                 ),
                               ),
                             ),
@@ -2573,7 +2624,7 @@ class _QuestionnaireState extends State<Questionnaire>
                               initialValue: extraInfo4,
                               keyboardType: TextInputType.text,
                               onChanged: (value) {
-                                extraInfo4= value;
+                                extraInfo4 = value;
                               },
                               decoration: const InputDecoration(
                                 hintText: 'More Info',
@@ -2584,19 +2635,19 @@ class _QuestionnaireState extends State<Questionnaire>
                                     vertical: 20.0, horizontal: 20.0),
                                 border: OutlineInputBorder(
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(20.0)),
+                                      BorderRadius.all(Radius.circular(20.0)),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
                                       color: Colors.white, width: 1.0),
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(20.0)),
+                                      BorderRadius.all(Radius.circular(20.0)),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
                                       color: Colors.blue, width: 2.0),
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(20.0)),
+                                      BorderRadius.all(Radius.circular(20.0)),
                                 ),
                               ),
                             ),
@@ -2651,7 +2702,6 @@ class _QuestionnaireState extends State<Questionnaire>
                                 'typeOfLoan': typeOfLoan,
                                 'purposeOfValuation': purposeOfValuation,
                                 'loanAcNo': loanAcNo,
-
                                 'otherDetails': extraInfo4,
                               };
                               setValuationDetail();
@@ -2671,1413 +2721,1460 @@ class _QuestionnaireState extends State<Questionnaire>
                     .collection(caseId)
                     .doc('Property Details')
                     .snapshots(),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return const Center(
-                    child: CircularProgressIndicator(
-                      backgroundColor: Colors.lightBlueAccent,
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        backgroundColor: Colors.lightBlueAccent,
+                      ),
+                    );
+                  }
+                  if (snapshot.data!.exists) {
+                    final message = snapshot.data!;
+                    typeOfRoofing = message.get('typesOfRoofing');
+                    noOfFloors = message.get('noOfFloors');
+                    propertyType = message.get('propertyType');
+                    _structValue = message.get('structureType');
+                    brickValue = message.get('brickWallThickness');
+                    finishValue = message.get('finishing');
+                    ventiValue = message.get('typeOfVentilators');
+                    noOfVentilators = message.get('noOfVentilators');
+                    noOfWindows = message.get('noOfWindows');
+                    flooring = message.get('flooring');
+                    pipeValue = message.get('typeOfPipe');
+                    noOfWashrooms = message.get('noOfWashrooms');
+                    noOfBathrooms = message.get('noOfBathrooms');
+                    noOfToilets = message.get('noOfToilets');
+                    kitchenPlatform = message.get('kitchenPlatform');
+                    cuddapahShevles = message.get('cuddapahShelves');
+                    noOfWaterTanks = message.get('noOfWaterTanks');
+                    tankValue = message.get('typeOfWaterTank');
+                    workValue = message.get('work');
+                    compoundWall = message.get('compoundWalls');
+                    flooringInDev = message.get('flooringInDev');
+                    boreWell = message.get('boreWell');
+                    extraInfo5 = message.get('otherDetails');
+                    noOfGate = message.get('noOfGates');
+                  }
+                  return SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+                          child: Container(
+                            margin: const EdgeInsets.fromLTRB(15, 10, 15, 0),
+                            width: MediaQuery.of(context).size.width,
+                            height: 60,
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 10.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(
+                                  color: Colors.blue,
+                                  style: BorderStyle.solid,
+                                  width: 0.80),
+                            ),
+                            child: Center(
+                              child: DropdownButton(
+                                focusColor: Colors.blue,
+                                dropdownColor: Colors.white,
+                                value: _userr == null
+                                    ? null
+                                    : _dropdownValues[_userr],
+                                underline: Container(
+                                  height: 0,
+                                ),
+                                items: _dropdownValues
+                                    .map(
+                                      (String value) =>
+                                          DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(
+                                          value,
+                                          style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 14),
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
+                                isExpanded: true,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _userr = _dropdownValues
+                                        .indexOf(value.toString());
+                                    propertyType = value.toString();
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text('P/B+G+ : '),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(15, 10, 0, 10),
+                                child: SizedBox(
+                                  width: MediaQuery.of(context).size.width / 2,
+                                  height: 50,
+                                  child: TextFormField(
+                                    initialValue: noOfWindows,
+                                    keyboardType: TextInputType.number,
+                                    onChanged: (value) {
+                                      noOfFloors = value;
+                                    },
+                                    decoration: const InputDecoration(
+                                      filled: true,
+                                      label: Text("No of Floors"),
+                                      fillColor: Colors.white,
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 20.0, horizontal: 20.0),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 1.0),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 2.0),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(15, 10, 15, 15),
+                          child: Container(
+                            margin: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+                            width: MediaQuery.of(context).size.width,
+                            height: 60,
+                            padding: EdgeInsets.symmetric(horizontal: 10.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(
+                                  color: Colors.blue,
+                                  style: BorderStyle.solid,
+                                  width: 0.80),
+                            ),
+                            child: Center(
+                              child: DropdownButton(
+                                focusColor: Colors.blue,
+                                dropdownColor: Colors.white,
+                                value: _struct == null
+                                    ? null
+                                    : structureList[_struct],
+                                underline: Container(
+                                  height: 0,
+                                ),
+                                items: structureList
+                                    .map(
+                                      (String value) =>
+                                          DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(
+                                          value,
+                                          style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 14),
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
+                                isExpanded: true,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _struct =
+                                        structureList.indexOf(value.toString());
+                                    _structValue = value.toString();
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(15, 10, 15, 15),
+                          child: Container(
+                            margin: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+                            width: MediaQuery.of(context).size.width,
+                            height: 60,
+                            padding: EdgeInsets.symmetric(horizontal: 10.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(
+                                  color: Colors.blue,
+                                  style: BorderStyle.solid,
+                                  width: 0.80),
+                            ),
+                            child: Center(
+                              child: DropdownButton(
+                                focusColor: Colors.blue,
+                                dropdownColor: Colors.white,
+                                value: slab == null ? null : roofingTypes[slab],
+                                underline: Container(
+                                  height: 0,
+                                ),
+                                items: roofingTypes
+                                    .map(
+                                      (String value) =>
+                                          DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(
+                                          value,
+                                          style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 14),
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
+                                isExpanded: true,
+                                onChanged: (value) {
+                                  setState(() {
+                                    slab =
+                                        roofingTypes.indexOf(value.toString());
+                                    typeOfRoofing = value.toString();
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(30, 0, 30, 15),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Brick Walls thickness:'),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(3, 0, 2, 0),
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width / 3,
+                                  height: 50,
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 10.0),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    border: Border.all(
+                                        color: Colors.blue,
+                                        style: BorderStyle.solid,
+                                        width: 0.80),
+                                  ),
+                                  child: Center(
+                                    child: DropdownButton(
+                                      focusColor: Colors.blue,
+                                      dropdownColor: Colors.white,
+                                      value: brick == null
+                                          ? null
+                                          : brickalls[brick],
+                                      underline: Container(
+                                        height: 0,
+                                      ),
+                                      items: brickalls
+                                          .map(
+                                            (String value) =>
+                                                DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(
+                                                value,
+                                                style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 14),
+                                              ),
+                                            ),
+                                          )
+                                          .toList(),
+                                      isExpanded: true,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          brick = brickalls
+                                              .indexOf(value.toString());
+                                          brickValue = value.toString();
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text('Finishing:'),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width / 3,
+                                  height: 50,
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 10.0),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    border: Border.all(
+                                        color: Colors.blue,
+                                        style: BorderStyle.solid,
+                                        width: 0.80),
+                                  ),
+                                  child: Center(
+                                    child: DropdownButton(
+                                      focusColor: Colors.blue,
+                                      dropdownColor: Colors.white,
+                                      value: finish == null
+                                          ? null
+                                          : wallFinishList[finish],
+                                      underline: Container(
+                                        height: 0,
+                                      ),
+                                      items: wallFinishList
+                                          .map(
+                                            (String value) =>
+                                                DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(
+                                                value,
+                                                style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 14),
+                                              ),
+                                            ),
+                                          )
+                                          .toList(),
+                                      isExpanded: true,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          finish = wallFinishList
+                                              .indexOf(value.toString());
+                                          finishValue = value.toString();
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width / 3,
+                                  height: 50,
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 10.0),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    border: Border.all(
+                                        color: Colors.blue,
+                                        style: BorderStyle.solid,
+                                        width: 0.80),
+                                  ),
+                                  child: Center(
+                                    child: DropdownButton(
+                                      focusColor: Colors.blue,
+                                      dropdownColor: Colors.white,
+                                      value: vent == null
+                                          ? null
+                                          : typesOfVentilation[vent],
+                                      underline: Container(
+                                        height: 0,
+                                      ),
+                                      items: typesOfVentilation
+                                          .map(
+                                            (String value) =>
+                                                DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(
+                                                value,
+                                                style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 14),
+                                              ),
+                                            ),
+                                          )
+                                          .toList(),
+                                      isExpanded: true,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          vent = typesOfVentilation
+                                              .indexOf(value.toString());
+                                          ventiValue = value.toString();
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const Text('Ventilators'),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(5, 0, 5, 10),
+                                child: SizedBox(
+                                  width: MediaQuery.of(context).size.width / 6,
+                                  height: 50,
+                                  child: TextFormField(
+                                    initialValue: noOfVentilators,
+                                    keyboardType: TextInputType.number,
+                                    onChanged: (value) {
+                                      noOfVentilators = value;
+                                    },
+                                    decoration: const InputDecoration(
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 20.0, horizontal: 20.0),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 1.0),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 2.0),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text('Windows: '),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(15, 10, 0, 10),
+                                child: SizedBox(
+                                  width: MediaQuery.of(context).size.width / 2,
+                                  height: 50,
+                                  child: TextFormField(
+                                    initialValue: noOfWindows,
+                                    keyboardType: TextInputType.number,
+                                    onChanged: (value) {
+                                      noOfWindows = value;
+                                    },
+                                    decoration: const InputDecoration(
+                                      filled: true,
+                                      label: Text("No of windows"),
+                                      fillColor: Colors.white,
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 20.0, horizontal: 20.0),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 1.0),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 2.0),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text('Flooring: '),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(15, 10, 0, 10),
+                                child: SizedBox(
+                                  width: MediaQuery.of(context).size.width / 2,
+                                  height: 50,
+                                  child: TextFormField(
+                                    initialValue: flooring,
+                                    keyboardType: TextInputType.text,
+                                    onChanged: (value) {
+                                      flooring = value;
+                                    },
+                                    decoration: const InputDecoration(
+                                      filled: true,
+                                      label: Text("Flooring"),
+                                      fillColor: Colors.white,
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 20.0, horizontal: 20.0),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 1.0),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 2.0),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Light Fitting'),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(3, 0, 2, 0),
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width / 3,
+                                  height: 50,
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 10.0),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    border: Border.all(
+                                        color: Colors.blue,
+                                        style: BorderStyle.solid,
+                                        width: 0.80),
+                                  ),
+                                  child: Center(
+                                    child: DropdownButton(
+                                      focusColor: Colors.blue,
+                                      dropdownColor: Colors.white,
+                                      value: pipe == null
+                                          ? null
+                                          : typesOfPipes[pipe],
+                                      underline: Container(
+                                        height: 0,
+                                      ),
+                                      items: typesOfPipes
+                                          .map(
+                                            (String value) =>
+                                                DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(
+                                                value,
+                                                style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 14),
+                                              ),
+                                            ),
+                                          )
+                                          .toList(),
+                                      isExpanded: true,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          pipe = typesOfPipes
+                                              .indexOf(value.toString());
+                                          pipeValue = value.toString();
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const Text('pipe.'),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text('No. Of WC: '),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(15, 10, 0, 10),
+                                child: SizedBox(
+                                  width: MediaQuery.of(context).size.width / 4,
+                                  height: 50,
+                                  child: TextFormField(
+                                    initialValue: noOfWashrooms,
+                                    keyboardType: TextInputType.number,
+                                    onChanged: (value) {
+                                      noOfWashrooms = value;
+                                    },
+                                    decoration: const InputDecoration(
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 20.0, horizontal: 20.0),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 1.0),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 2.0),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text('No. Of Bathrooms:'),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(15, 10, 0, 10),
+                                child: SizedBox(
+                                  width: MediaQuery.of(context).size.width / 4,
+                                  height: 50,
+                                  child: TextFormField(
+                                    initialValue: noOfBathrooms,
+                                    keyboardType: TextInputType.number,
+                                    onChanged: (value) {
+                                      noOfBathrooms = value;
+                                    },
+                                    decoration: const InputDecoration(
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 20.0, horizontal: 20.0),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 1.0),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 2.0),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text('No. Of Toilets:'),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(15, 10, 0, 10),
+                                child: SizedBox(
+                                  width: MediaQuery.of(context).size.width / 4,
+                                  height: 50,
+                                  child: TextFormField(
+                                    initialValue: noOfToilets,
+                                    keyboardType: TextInputType.number,
+                                    onChanged: (value) {
+                                      noOfToilets = value;
+                                    },
+                                    decoration: const InputDecoration(
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 20.0, horizontal: 20.0),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 1.0),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 2.0),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text('Kitchen Platforms:'),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(15, 10, 0, 10),
+                                child: SizedBox(
+                                  width: MediaQuery.of(context).size.width / 4,
+                                  height: 50,
+                                  child: TextFormField(
+                                    initialValue: kitchenPlatform,
+                                    keyboardType: TextInputType.number,
+                                    onChanged: (value) {
+                                      kitchenPlatform = value;
+                                    },
+                                    decoration: const InputDecoration(
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 20.0, horizontal: 20.0),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 1.0),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 2.0),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text('Cuddapah Shelves:'),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(15, 10, 0, 10),
+                                child: SizedBox(
+                                  width: MediaQuery.of(context).size.width / 4,
+                                  height: 50,
+                                  child: TextFormField(
+                                    initialValue: cuddapahShevles,
+                                    keyboardType: TextInputType.number,
+                                    onChanged: (value) {
+                                      cuddapahShevles = value;
+                                    },
+                                    decoration: const InputDecoration(
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 20.0, horizontal: 20.0),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 1.0),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 2.0),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(15, 10, 15, 15),
+                          child: Container(
+                            margin: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+                            width: MediaQuery.of(context).size.width,
+                            height: 60,
+                            padding: EdgeInsets.symmetric(horizontal: 10.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(
+                                  color: Colors.blue,
+                                  style: BorderStyle.solid,
+                                  width: 0.80),
+                            ),
+                            child: Center(
+                              child: DropdownButton(
+                                focusColor: Colors.blue,
+                                dropdownColor: Colors.white,
+                                value:
+                                    stair == null ? null : typesOfStairs[stair],
+                                underline: Container(
+                                  height: 0,
+                                ),
+                                items: typesOfStairs
+                                    .map(
+                                      (String value) =>
+                                          DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(
+                                          value,
+                                          style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 14),
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
+                                isExpanded: true,
+                                onChanged: (value) {
+                                  setState(() {
+                                    stair =
+                                        typesOfStairs.indexOf(value.toString());
+                                    typeOfStair = value.toString();
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(15, 10, 15, 15),
+                          child: Container(
+                            margin: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+                            width: MediaQuery.of(context).size.width,
+                            height: 60,
+                            padding: EdgeInsets.symmetric(horizontal: 10.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(
+                                  color: Colors.blue,
+                                  style: BorderStyle.solid,
+                                  width: 0.80),
+                            ),
+                            child: Center(
+                              child: DropdownButton(
+                                focusColor: Colors.blue,
+                                dropdownColor: Colors.white,
+                                value:
+                                    rail == null ? null : typesOfRailings[rail],
+                                underline: Container(
+                                  height: 0,
+                                ),
+                                items: typesOfRailings
+                                    .map(
+                                      (String value) =>
+                                          DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(
+                                          value,
+                                          style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 14),
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
+                                isExpanded: true,
+                                onChanged: (value) {
+                                  setState(() {
+                                    rail = typesOfRailings
+                                        .indexOf(value.toString());
+                                    typeOfRailing = value.toString();
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text('No of Steps:'),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(15, 10, 0, 10),
+                                child: SizedBox(
+                                  width: MediaQuery.of(context).size.width / 4,
+                                  height: 50,
+                                  child: TextFormField(
+                                    initialValue: noOfSteps,
+                                    keyboardType: TextInputType.number,
+                                    onChanged: (value) {
+                                      noOfSteps = value;
+                                    },
+                                    decoration: const InputDecoration(
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 20.0, horizontal: 20.0),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 1.0),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 2.0),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text('No of Gates:'),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(15, 10, 0, 10),
+                                child: SizedBox(
+                                  width: MediaQuery.of(context).size.width / 4,
+                                  height: 50,
+                                  child: TextFormField(
+                                    initialValue: noOfGate,
+                                    keyboardType: TextInputType.number,
+                                    onChanged: (value) {
+                                      noOfGate = value;
+                                    },
+                                    decoration: const InputDecoration(
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 20.0, horizontal: 20.0),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 1.0),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 2.0),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text('No of Water Tanks:'),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(15, 10, 0, 10),
+                                child: SizedBox(
+                                  width: MediaQuery.of(context).size.width / 4,
+                                  height: 50,
+                                  child: TextFormField(
+                                    initialValue: noOfWaterTanks,
+                                    keyboardType: TextInputType.number,
+                                    onChanged: (value) {
+                                      noOfWaterTanks = value;
+                                    },
+                                    decoration: const InputDecoration(
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 20.0, horizontal: 20.0),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 1.0),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 2.0),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Type of Water Tank'),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(3, 0, 2, 0),
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width / 3,
+                                  height: 50,
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 10.0),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    border: Border.all(
+                                        color: Colors.blue,
+                                        style: BorderStyle.solid,
+                                        width: 0.80),
+                                  ),
+                                  child: Center(
+                                    child: DropdownButton(
+                                      focusColor: Colors.blue,
+                                      dropdownColor: Colors.white,
+                                      value:
+                                          tank == null ? null : tankType[tank],
+                                      underline: Container(
+                                        height: 0,
+                                      ),
+                                      items: tankType
+                                          .map(
+                                            (String value) =>
+                                                DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(
+                                                value,
+                                                style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 14),
+                                              ),
+                                            ),
+                                          )
+                                          .toList(),
+                                      isExpanded: true,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          tank = tankType
+                                              .indexOf(value.toString());
+                                          tankValue = value.toString();
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Work:'),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(3, 0, 2, 0),
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width / 3,
+                                  height: 50,
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 10.0),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    border: Border.all(
+                                        color: Colors.blue,
+                                        style: BorderStyle.solid,
+                                        width: 0.80),
+                                  ),
+                                  child: Center(
+                                    child: DropdownButton(
+                                      focusColor: Colors.blue,
+                                      dropdownColor: Colors.white,
+                                      value:
+                                          work == null ? null : workTypes[work],
+                                      underline: Container(
+                                        height: 0,
+                                      ),
+                                      items: workTypes
+                                          .map(
+                                            (String value) =>
+                                                DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(
+                                                value,
+                                                style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 14),
+                                              ),
+                                            ),
+                                          )
+                                          .toList(),
+                                      isExpanded: true,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          work = workTypes
+                                              .indexOf(value.toString());
+                                          workValue = value.toString();
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text('Compound Walls: '),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(15, 10, 0, 10),
+                                child: SizedBox(
+                                  width: MediaQuery.of(context).size.width / 4,
+                                  height: 50,
+                                  child: TextFormField(
+                                    initialValue: compoundWall,
+                                    keyboardType: TextInputType.number,
+                                    onChanged: (value) {
+                                      compoundWall = value;
+                                    },
+                                    decoration: const InputDecoration(
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 20.0, horizontal: 20.0),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 1.0),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 2.0),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text('Flooring in Site Development: '),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(15, 10, 0, 10),
+                                child: SizedBox(
+                                  width: MediaQuery.of(context).size.width / 4,
+                                  height: 50,
+                                  child: TextFormField(
+                                    initialValue: flooringInDev,
+                                    keyboardType: TextInputType.number,
+                                    onChanged: (value) {
+                                      flooringInDev = value;
+                                    },
+                                    decoration: const InputDecoration(
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 20.0, horizontal: 20.0),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 1.0),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 2.0),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text('Bore Well: '),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(15, 10, 0, 10),
+                                child: SizedBox(
+                                  width: MediaQuery.of(context).size.width / 4,
+                                  height: 50,
+                                  child: TextFormField(
+                                    initialValue: boreWell,
+                                    keyboardType: TextInputType.number,
+                                    onChanged: (value) {
+                                      boreWell = value;
+                                    },
+                                    decoration: const InputDecoration(
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 20.0, horizontal: 20.0),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 1.0),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 2.0),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(30, 0, 30, 10),
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            child: TextFormField(
+                              initialValue: extraInfo5,
+                              keyboardType: TextInputType.text,
+                              onChanged: (value) {
+                                extraInfo5 = value;
+                              },
+                              decoration: const InputDecoration(
+                                hintText: 'More Info',
+                                labelText: 'More Info',
+                                filled: true,
+                                fillColor: Colors.white,
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 20.0, horizontal: 20.0),
+                                border: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20.0)),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.white, width: 1.0),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20.0)),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.blue, width: 2.0),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20.0)),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.blue,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                          ),
+                          onPressed: () {
+                            if (loanAcNo.isEmpty) {
+                              const snackBar = SnackBar(
+                                  content: Text('Enter loan account number'));
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                            } else {
+                              propertyDetails = {
+                                'noOfSteps': noOfSteps,
+                                'noOfGates': noOfGate,
+                                'typeOfRailing': typeOfRailing,
+                                'typeOfStairs': typeOfStair,
+                                'noOfFloors': noOfFloors,
+                                'propertyType': actualCostOfPurchase,
+                                'structureType': expectedValuation,
+                                'loanAmount': loanAmount,
+                                'brickWallThickness': brickValue,
+                                'finishing': finishValue,
+                                'typeOfVentilators': ventiValue,
+                                'noOfVentilators': noOfVentilators,
+                                'noOfWindows': noOfWindows,
+                                'flooring': flooring,
+                                'typeOfPipe': pipeValue,
+                                'noOfWashrooms': noOfWashrooms,
+                                'noOfBathrooms': noOfBathrooms,
+                                'noOfToilets': noOfToilets,
+                                'kitchenPlatform': kitchenPlatform,
+                                'cuddapahShelves': cuddapahShevles,
+                                'noOfWaterTanks': noOfWaterTanks,
+                                'typeOfWaterTank': tankValue,
+                                'work': work,
+                                'compoundWalls': compoundWall,
+                                'flooringInDev': flooringInDev,
+                                'boreWell': boreWell,
+                                'typeOfRoofing': typeOfRoofing,
+                                'otherDetails': extraInfo5,
+                              };
+                              setPropertyDetail();
+                              showDialog(
+                                context: context,
+                                builder: (ctx) => AlertDialog(
+                                  backgroundColor: Colors.white,
+                                  content: const Text(
+                                    "Do you wish to add a Sale Comparable?",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontFamily: "BonaNova"),
+                                  ),
+                                  actions: <Widget>[
+                                    // ignore: deprecated_member_use
+                                    FlatButton(
+                                        onPressed: () {
+                                          Navigator.of(ctx).pop();
+                                          Navigator.of(ctx).pop();
+                                        },
+                                        child: const Text(
+                                          "No",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontFamily: "BonaNova"),
+                                        )),
+                                    FlatButton(
+                                        onPressed: () {
+                                          getCaseId(caseId);
+                                          Navigator.pop(context);
+                                          Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    SaleComparable()),
+                                          );
+                                        },
+                                        child: Text(
+                                          "Yes",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontFamily: "BonaNova"),
+                                        ))
+                                  ],
+                                ),
+                              );
+                            }
+                          },
+                          child: const Text('Submit'),
+                        ),
+                      ],
                     ),
                   );
-                }
-                if (snapshot.data!.exists) {
-                  final message = snapshot.data!;
-                  typeOfRoofing = message.get('typesOfRoofing');
-                  noOfFloors = message.get('noOfFloors');
-                  propertyType = message.get('propertyType');
-                  _structValue = message.get('structureType');
-                  brickValue = message.get('brickWallThickness');
-                  finishValue = message.get('finishing');
-                  ventiValue = message.get('typeOfVentilators');
-                  noOfVentilators = message.get('noOfVentilators');
-                  noOfWindows = message.get('noOfWindows');
-                  flooring = message.get('flooring');
-                  pipeValue = message.get('typeOfPipe');
-                  noOfWashrooms = message.get('noOfWashrooms');
-                  noOfBathrooms = message.get('noOfBathrooms');
-                  noOfToilets= message.get('noOfToilets');
-                  kitchenPlatform = message.get('kitchenPlatform');
-                  cuddapahShevles = message.get('cuddapahShelves');
-                  noOfWaterTanks = message.get('noOfWaterTanks');
-                  tankValue = message.get('typeOfWaterTank');
-                  workValue = message.get('work');
-                  compoundWall = message.get('compoundWalls');
-                  flooringInDev = message.get('flooringInDev');
-                  boreWell = message.get('boreWell');
-                  extraInfo5 = message.get('otherDetails');
-                  noOfGate = message.get('noOfGates');
-                }
-                return SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
-                        child: Container(
-                          margin: const EdgeInsets.fromLTRB(15, 10, 15, 0),
-                          width: MediaQuery.of(context).size.width,
-                          height: 60,
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(
-                                color: Colors.blue,
-                                style: BorderStyle.solid,
-                                width: 0.80),
-                          ),
-                          child: Center(
-                            child: DropdownButton(
-                              focusColor: Colors.blue,
-                              dropdownColor: Colors.white,
-                              value:
-                                  _userr == null ? null : _dropdownValues[_userr],
-                              underline: Container(
-                                height: 0,
-                              ),
-                              items: _dropdownValues
-                                  .map(
-                                    (String value) => DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(
-                                        value,
-                                        style: const TextStyle(
-                                            color: Colors.black, fontSize: 14),
-                                      ),
-                                    ),
-                                  )
-                                  .toList(),
-                              isExpanded: true,
-                              onChanged: (value) {
-                                setState(() {
-                                  _userr =
-                                      _dropdownValues.indexOf(value.toString());
-                                  propertyType = value.toString();
-                                });
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text('P/B+G+ : '),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(15, 10, 0, 10),
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width / 2,
-                                height: 50,
-                                child: TextFormField(
-                                  initialValue: noOfWindows,
-                                  keyboardType: TextInputType.number,
-                                  onChanged: (value) {
-                                    noOfFloors = value;
-                                  },
-                                  decoration: const InputDecoration(
-                                    filled: true,
-                                    label: Text("No of Floors"),
-                                    fillColor: Colors.white,
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 20.0, horizontal: 20.0),
-                                    border: OutlineInputBorder(
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.blue, width: 1.0),
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.blue, width: 2.0),
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(15, 10, 15, 15),
-                        child: Container(
-                          margin: const EdgeInsets.fromLTRB(15, 10, 15, 10),
-                          width: MediaQuery.of(context).size.width,
-                          height: 60,
-                          padding: EdgeInsets.symmetric(horizontal: 10.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(
-                                color: Colors.blue,
-                                style: BorderStyle.solid,
-                                width: 0.80),
-                          ),
-                          child: Center(
-                            child: DropdownButton(
-                              focusColor: Colors.blue,
-                              dropdownColor: Colors.white,
-                              value:
-                                  _struct == null ? null : structureList[_struct],
-                              underline: Container(
-                                height: 0,
-                              ),
-                              items: structureList
-                                  .map(
-                                    (String value) => DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(
-                                        value,
-                                        style: const TextStyle(
-                                            color: Colors.black, fontSize: 14),
-                                      ),
-                                    ),
-                                  )
-                                  .toList(),
-                              isExpanded: true,
-                              onChanged: (value) {
-                                setState(() {
-                                  _struct = structureList.indexOf(value.toString());
-                                  _structValue = value.toString();
-                                });
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(15, 10, 15, 15),
-                        child: Container(
-                          margin: const EdgeInsets.fromLTRB(15, 10, 15, 10),
-                          width: MediaQuery.of(context).size.width,
-                          height: 60,
-                          padding: EdgeInsets.symmetric(horizontal: 10.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(
-                                color: Colors.blue,
-                                style: BorderStyle.solid,
-                                width: 0.80),
-                          ),
-                          child: Center(
-                            child: DropdownButton(
-                              focusColor: Colors.blue,
-                              dropdownColor: Colors.white,
-                              value:
-                              slab == null ? null : roofingTypes[slab],
-                              underline: Container(
-                                height: 0,
-                              ),
-                              items: roofingTypes
-                                  .map(
-                                    (String value) => DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(
-                                    value,
-                                    style: const TextStyle(
-                                        color: Colors.black, fontSize: 14),
-                                  ),
-                                ),
-                              )
-                                  .toList(),
-                              isExpanded: true,
-                              onChanged: (value) {
-                                setState(() {
-                                  slab = roofingTypes.indexOf(value.toString());
-                                  typeOfRoofing = value.toString();
-                                });
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(30, 0, 30, 15),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Brick Walls thickness:'),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(3, 0, 2, 0),
-                              child: Container(
-                                width: MediaQuery.of(context).size.width / 3,
-                                height: 50,
-                                padding: EdgeInsets.symmetric(horizontal: 10.0),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(
-                                      color: Colors.blue,
-                                      style: BorderStyle.solid,
-                                      width: 0.80),
-                                ),
-                                child: Center(
-                                  child: DropdownButton(
-                                    focusColor: Colors.blue,
-                                    dropdownColor: Colors.white,
-                                    value: brick == null ? null : brickalls[brick],
-                                    underline: Container(
-                                      height: 0,
-                                    ),
-                                    items: brickalls
-                                        .map(
-                                          (String value) =>
-                                              DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Text(
-                                              value,
-                                              style: const TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 14),
-                                            ),
-                                          ),
-                                        )
-                                        .toList(),
-                                    isExpanded: true,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        brick = brickalls.indexOf(value.toString());
-                                        brickValue = value.toString();
-                                      });
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text('Finishing:'),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
-                              child: Container(
-                                width: MediaQuery.of(context).size.width / 3,
-                                height: 50,
-                                padding: EdgeInsets.symmetric(horizontal: 10.0),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(
-                                      color: Colors.blue,
-                                      style: BorderStyle.solid,
-                                      width: 0.80),
-                                ),
-                                child: Center(
-                                  child: DropdownButton(
-                                    focusColor: Colors.blue,
-                                    dropdownColor: Colors.white,
-                                    value: finish == null
-                                        ? null
-                                        : wallFinishList[finish],
-                                    underline: Container(
-                                      height: 0,
-                                    ),
-                                    items: wallFinishList
-                                        .map(
-                                          (String value) =>
-                                              DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Text(
-                                              value,
-                                              style: const TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 14),
-                                            ),
-                                          ),
-                                        )
-                                        .toList(),
-                                    isExpanded: true,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        finish = wallFinishList
-                                            .indexOf(value.toString());
-                                        finishValue = value.toString();
-                                      });
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
-                              child: Container(
-                                width: MediaQuery.of(context).size.width / 3,
-                                height: 50,
-                                padding: EdgeInsets.symmetric(horizontal: 10.0),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(
-                                      color: Colors.blue,
-                                      style: BorderStyle.solid,
-                                      width: 0.80),
-                                ),
-                                child: Center(
-                                  child: DropdownButton(
-                                    focusColor: Colors.blue,
-                                    dropdownColor: Colors.white,
-                                    value: vent == null
-                                        ? null
-                                        : typesOfVentilation[vent],
-                                    underline: Container(
-                                      height: 0,
-                                    ),
-                                    items: typesOfVentilation
-                                        .map(
-                                          (String value) =>
-                                              DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Text(
-                                              value,
-                                              style: const TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 14),
-                                            ),
-                                          ),
-                                        )
-                                        .toList(),
-                                    isExpanded: true,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        vent = typesOfVentilation
-                                            .indexOf(value.toString());
-                                        ventiValue = value.toString();
-                                      });
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const Text('Ventilators'),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(5, 0, 5, 10),
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width / 6,
-                                height: 50,
-                                child: TextFormField(
-                                  initialValue: noOfVentilators,
-                                  keyboardType: TextInputType.number,
-                                  onChanged: (value) {
-                                    noOfVentilators = value;
-                                  },
-                                  decoration: const InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 20.0, horizontal: 20.0),
-                                    border: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.blue, width: 1.0),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.blue, width: 2.0),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text('Windows: '),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(15, 10, 0, 10),
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width / 2,
-                                height: 50,
-                                child: TextFormField(
-                                  initialValue: noOfWindows,
-                                  keyboardType: TextInputType.number,
-                                  onChanged: (value) {
-                                    noOfWindows = value;
-                                  },
-                                  decoration: const InputDecoration(
-                                    filled: true,
-                                    label: Text("No of windows"),
-                                    fillColor: Colors.white,
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 20.0, horizontal: 20.0),
-                                    border: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.blue, width: 1.0),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.blue, width: 2.0),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text('Flooring: '),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(15, 10, 0, 10),
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width / 2,
-                                height: 50,
-                                child: TextFormField(
-                                  initialValue: flooring,
-                                  keyboardType: TextInputType.text,
-                                  onChanged: (value) {
-                                    flooring = value;
-                                  },
-                                  decoration: const InputDecoration(
-                                    filled: true,
-                                    label: Text("Flooring"),
-                                    fillColor: Colors.white,
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 20.0, horizontal: 20.0),
-                                    border: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.blue, width: 1.0),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.blue, width: 2.0),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Light Fitting'),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(3, 0, 2, 0),
-                              child: Container(
-                                width: MediaQuery.of(context).size.width / 3,
-                                height: 50,
-                                padding: EdgeInsets.symmetric(horizontal: 10.0),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(
-                                      color: Colors.blue,
-                                      style: BorderStyle.solid,
-                                      width: 0.80),
-                                ),
-                                child: Center(
-                                  child: DropdownButton(
-                                    focusColor: Colors.blue,
-                                    dropdownColor: Colors.white,
-                                    value: pipe == null ? null : typesOfPipes[pipe],
-                                    underline: Container(
-                                      height: 0,
-                                    ),
-                                    items: typesOfPipes
-                                        .map(
-                                          (String value) =>
-                                              DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Text(
-                                              value,
-                                              style: const TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 14),
-                                            ),
-                                          ),
-                                        )
-                                        .toList(),
-                                    isExpanded: true,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        pipe =
-                                            typesOfPipes.indexOf(value.toString());
-                                        pipeValue = value.toString();
-                                      });
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const Text('pipe.'),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text('No. Of WC: '),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(15, 10, 0, 10),
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width / 4,
-                                height: 50,
-                                child: TextFormField(
-                                  initialValue: noOfWashrooms,
-                                  keyboardType: TextInputType.number,
-                                  onChanged: (value) {
-                                    noOfWashrooms = value;
-                                  },
-                                  decoration: const InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 20.0, horizontal: 20.0),
-                                    border: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.blue, width: 1.0),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.blue, width: 2.0),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text('No. Of Bathrooms:'),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(15, 10, 0, 10),
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width / 4,
-                                height: 50,
-                                child: TextFormField(
-                                  initialValue: noOfBathrooms,
-                                  keyboardType: TextInputType.number,
-                                  onChanged: (value) {
-                                    noOfBathrooms = value;
-                                  },
-                                  decoration: const InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 20.0, horizontal: 20.0),
-                                    border: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.blue, width: 1.0),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.blue, width: 2.0),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text('No. Of Toilets:'),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(15, 10, 0, 10),
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width / 4,
-                                height: 50,
-                                child: TextFormField(
-                                  initialValue: noOfToilets,
-                                  keyboardType: TextInputType.number,
-                                  onChanged: (value) {
-                                    noOfToilets = value;
-                                  },
-                                  decoration: const InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 20.0, horizontal: 20.0),
-                                    border: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.blue, width: 1.0),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.blue, width: 2.0),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text('Kitchen Platforms:'),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(15, 10, 0, 10),
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width / 4,
-                                height: 50,
-                                child: TextFormField(
-                                  initialValue: kitchenPlatform,
-                                  keyboardType: TextInputType.number,
-                                  onChanged: (value) {
-                                    kitchenPlatform = value;
-                                  },
-                                  decoration: const InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 20.0, horizontal: 20.0),
-                                    border: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.blue, width: 1.0),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.blue, width: 2.0),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text('Cuddapah Shelves:'),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(15, 10, 0, 10),
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width / 4,
-                                height: 50,
-                                child: TextFormField(
-                                  initialValue: cuddapahShevles,
-                                  keyboardType: TextInputType.number,
-                                  onChanged: (value) {
-                                    cuddapahShevles = value;
-                                  },
-                                  decoration: const InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 20.0, horizontal: 20.0),
-                                    border: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.blue, width: 1.0),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.blue, width: 2.0),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(15, 10, 15, 15),
-                        child: Container(
-                          margin: const EdgeInsets.fromLTRB(15, 10, 15, 10),
-                          width: MediaQuery.of(context).size.width,
-                          height: 60,
-                          padding: EdgeInsets.symmetric(horizontal: 10.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(
-                                color: Colors.blue,
-                                style: BorderStyle.solid,
-                                width: 0.80),
-                          ),
-                          child: Center(
-                            child: DropdownButton(
-                              focusColor: Colors.blue,
-                              dropdownColor: Colors.white,
-                              value:
-                              stair == null ? null : typesOfStairs[stair],
-                              underline: Container(
-                                height: 0,
-                              ),
-                              items: typesOfStairs
-                                  .map(
-                                    (String value) => DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(
-                                    value,
-                                    style: const TextStyle(
-                                        color: Colors.black, fontSize: 14),
-                                  ),
-                                ),
-                              )
-                                  .toList(),
-                              isExpanded: true,
-                              onChanged: (value) {
-                                setState(() {
-                                  stair = typesOfStairs.indexOf(value.toString());
-                                  typeOfStair = value.toString();
-                                });
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(15, 10, 15, 15),
-                        child: Container(
-                          margin: const EdgeInsets.fromLTRB(15, 10, 15, 10),
-                          width: MediaQuery.of(context).size.width,
-                          height: 60,
-                          padding: EdgeInsets.symmetric(horizontal: 10.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(
-                                color: Colors.blue,
-                                style: BorderStyle.solid,
-                                width: 0.80),
-                          ),
-                          child: Center(
-                            child: DropdownButton(
-                              focusColor: Colors.blue,
-                              dropdownColor: Colors.white,
-                              value:
-                              rail == null ? null : typesOfRailings[rail],
-                              underline: Container(
-                                height: 0,
-                              ),
-                              items: typesOfRailings
-                                  .map(
-                                    (String value) => DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(
-                                    value,
-                                    style: const TextStyle(
-                                        color: Colors.black, fontSize: 14),
-                                  ),
-                                ),
-                              )
-                                  .toList(),
-                              isExpanded: true,
-                              onChanged: (value) {
-                                setState(() {
-                                  rail = typesOfRailings.indexOf(value.toString());
-                                  typeOfRailing = value.toString();
-                                });
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text('No of Steps:'),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(15, 10, 0, 10),
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width / 4,
-                                height: 50,
-                                child: TextFormField(
-                                  initialValue: noOfSteps,
-                                  keyboardType: TextInputType.number,
-                                  onChanged: (value) {
-                                    noOfSteps = value;
-                                  },
-                                  decoration: const InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 20.0, horizontal: 20.0),
-                                    border: OutlineInputBorder(
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.blue, width: 1.0),
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.blue, width: 2.0),
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text('No of Gates:'),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(15, 10, 0, 10),
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width / 4,
-                                height: 50,
-                                child: TextFormField(
-                                  initialValue: noOfGate,
-                                  keyboardType: TextInputType.number,
-                                  onChanged: (value) {
-                                    noOfGate = value;
-                                  },
-                                  decoration: const InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 20.0, horizontal: 20.0),
-                                    border: OutlineInputBorder(
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.blue, width: 1.0),
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.blue, width: 2.0),
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text('No of Water Tanks:'),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(15, 10, 0, 10),
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width / 4,
-                                height: 50,
-                                child: TextFormField(
-                                  initialValue: noOfWaterTanks,
-                                  keyboardType: TextInputType.number,
-                                  onChanged: (value) {
-                                    noOfWaterTanks = value;
-                                  },
-                                  decoration: const InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 20.0, horizontal: 20.0),
-                                    border: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.blue, width: 1.0),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.blue, width: 2.0),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Type of Water Tank'),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(3, 0, 2, 0),
-                              child: Container(
-                                width: MediaQuery.of(context).size.width / 3,
-                                height: 50,
-                                padding: EdgeInsets.symmetric(horizontal: 10.0),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(
-                                      color: Colors.blue,
-                                      style: BorderStyle.solid,
-                                      width: 0.80),
-                                ),
-                                child: Center(
-                                  child: DropdownButton(
-                                    focusColor: Colors.blue,
-                                    dropdownColor: Colors.white,
-                                    value: tank == null ? null : tankType[tank],
-                                    underline: Container(
-                                      height: 0,
-                                    ),
-                                    items: tankType
-                                        .map(
-                                          (String value) =>
-                                              DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Text(
-                                              value,
-                                              style: const TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 14),
-                                            ),
-                                          ),
-                                        )
-                                        .toList(),
-                                    isExpanded: true,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        tank = tankType.indexOf(value.toString());
-                                        tankValue = value.toString();
-                                      });
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Work:'),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(3, 0, 2, 0),
-                              child: Container(
-                                width: MediaQuery.of(context).size.width / 3,
-                                height: 50,
-                                padding: EdgeInsets.symmetric(horizontal: 10.0),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(
-                                      color: Colors.blue,
-                                      style: BorderStyle.solid,
-                                      width: 0.80),
-                                ),
-                                child: Center(
-                                  child: DropdownButton(
-                                    focusColor: Colors.blue,
-                                    dropdownColor: Colors.white,
-                                    value: work == null ? null : workTypes[work],
-                                    underline: Container(
-                                      height: 0,
-                                    ),
-                                    items: workTypes
-                                        .map(
-                                          (String value) =>
-                                              DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Text(
-                                              value,
-                                              style: const TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 14),
-                                            ),
-                                          ),
-                                        )
-                                        .toList(),
-                                    isExpanded: true,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        work = workTypes.indexOf(value.toString());
-                                        workValue = value.toString();
-                                      });
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text('Compound Walls: '),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(15, 10, 0, 10),
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width / 4,
-                                height: 50,
-                                child: TextFormField(
-                                  initialValue: compoundWall,
-                                  keyboardType: TextInputType.number,
-                                  onChanged: (value) {
-                                    compoundWall = value;
-                                  },
-                                  decoration: const InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 20.0, horizontal: 20.0),
-                                    border: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.blue, width: 1.0),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.blue, width: 2.0),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text('Flooring in Site Development: '),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(15, 10, 0, 10),
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width / 4,
-                                height: 50,
-                                child: TextFormField(
-                                  initialValue: flooringInDev,
-                                  keyboardType: TextInputType.number,
-                                  onChanged: (value) {
-                                    flooringInDev = value;
-                                  },
-                                  decoration: const InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 20.0, horizontal: 20.0),
-                                    border: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.blue, width: 1.0),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.blue, width: 2.0),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text('Bore Well: '),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(15, 10, 0, 10),
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width / 4,
-                                height: 50,
-                                child: TextFormField(
-                                  initialValue: boreWell,
-                                  keyboardType: TextInputType.number,
-                                  onChanged: (value) {
-                                    boreWell = value;
-                                  },
-                                  decoration: const InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 20.0, horizontal: 20.0),
-                                    border: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.blue, width: 1.0),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.blue, width: 2.0),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(30, 0, 30, 10),
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                          child: TextFormField(
-                            initialValue: extraInfo5,
-                            keyboardType: TextInputType.text,
-                            onChanged: (value) {
-                              extraInfo5= value;
-                            },
-                            decoration: const InputDecoration(
-                              hintText: 'More Info',
-                              labelText: 'More Info',
-                              filled: true,
-                              fillColor: Colors.white,
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 20.0, horizontal: 20.0),
-                              border: OutlineInputBorder(
-                                borderRadius:
-                                BorderRadius.all(Radius.circular(20.0)),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Colors.white, width: 1.0),
-                                borderRadius:
-                                BorderRadius.all(Radius.circular(20.0)),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Colors.blue, width: 2.0),
-                                borderRadius:
-                                BorderRadius.all(Radius.circular(20.0)),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.blue,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                        ),
-                        onPressed: () {
-                          if (loanAcNo.isEmpty) {
-                            const snackBar = SnackBar(
-                                content: Text('Enter loan account number'));
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
-                          } else {
-                            propertyDetails = {
-                              'noOfSteps': noOfSteps,
-                              'noOfGates':noOfGate,
-                              'typeOfRailing': typeOfRailing,
-                              'typeOfStairs': typeOfStair,
-                              'noOfFloors': noOfFloors,
-                              'propertyType': actualCostOfPurchase,
-                              'structureType': expectedValuation,
-                              'loanAmount': loanAmount,
-                              'brickWallThickness': brickValue,
-                              'finishing': finishValue,
-                              'typeOfVentilators': ventiValue,
-                              'noOfVentilators': noOfVentilators,
-                              'noOfWindows': noOfWindows,
-                              'flooring': flooring,
-                              'typeOfPipe': pipeValue,
-                              'noOfWashrooms': noOfWashrooms,
-                              'noOfBathrooms': noOfBathrooms,
-                              'noOfToilets': noOfToilets,
-                              'kitchenPlatform': kitchenPlatform,
-                              'cuddapahShelves': cuddapahShevles,
-                              'noOfWaterTanks': noOfWaterTanks,
-                              'typeOfWaterTank': tankValue,
-                              'work': work,
-                              'compoundWalls': compoundWall,
-                              'flooringInDev': flooringInDev,
-                              'boreWell': boreWell,
-                              'typeOfRoofing':typeOfRoofing,
-                              'otherDetails': extraInfo5,
-                            };
-                            setPropertyDetail();
-                            showDialog(
-                              context: context,
-                              builder: (ctx) => AlertDialog(
-                                backgroundColor: Colors.white,
-                                content: const Text(
-                                  "Do you wish to add a Sale Comparable?",
-                                  style: TextStyle(color: Colors.black, fontFamily: "BonaNova"),
-                                ),
-                                actions: <Widget>[
-                                  // ignore: deprecated_member_use
-                                  FlatButton(
-                                      onPressed: () {
-                                        Navigator.of(ctx).pop();
-                                        Navigator.of(ctx).pop();
-                                      },
-                                      child: const Text(
-                                        "No",
-                                        style:
-                                        TextStyle(color: Colors.black, fontFamily: "BonaNova"),
-                                      )),
-                                  FlatButton(
-                                      onPressed: () {
-                                        getCaseId(caseId);
-                                        Navigator.pop(context);
-                                        Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => SaleComparable()
-                                          ),
-                                        );
-                                      },
-                                      child: Text(
-                                        "Yes",
-                                        style:
-                                        TextStyle(color: Colors.black, fontFamily: "BonaNova"),
-                                      ))
-                                ],
-                              ),
-                            );
-                          }
-                        },
-                        child: const Text('Submit'),
-                      ),
-                    ],
-                  ),
-                );
-              }
-            ),
-
+                }),
           ],
         ),
       ),

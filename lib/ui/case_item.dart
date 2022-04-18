@@ -1,21 +1,27 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:property_valuation/ui/visit_detail.dart';
 
-
 import '../main.dart';
 
-Widget returnCaseItem(BuildContext context, int index, String bankName, String id, String customerName, String propertyType, String date, String phone, String address, Map visitMap) {
+Widget returnCaseItem(
+    BuildContext context,
+    int index,
+    String bankName,
+    String id,
+    String customerName,
+    String propertyType,
+    String date,
+    String phone,
+    String address,
+    Map visitMap) {
   return GestureDetector(
-    onTap: (){
+    onTap: () async {
       getCaseDetail(visitMap, id, customerName);
       Navigator.push(
         context,
-        MaterialPageRoute(
-            builder: (context) => VisitDetail()
-        ),
+        MaterialPageRoute(builder: (context) => VisitDetail()),
       );
     },
     child: Card(
@@ -27,8 +33,8 @@ Widget returnCaseItem(BuildContext context, int index, String bankName, String i
               padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
               child: Text(
                 bankName,
-                style: const TextStyle(
-                    fontSize: 18, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
             Padding(
@@ -84,8 +90,7 @@ Widget returnCaseItem(BuildContext context, int index, String bankName, String i
                       child: Text(
                         propertyType,
                         style: const TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w400),
+                            fontSize: 15, fontWeight: FontWeight.w400),
                       ),
                     ),
                   ),
@@ -106,8 +111,7 @@ Widget returnCaseItem(BuildContext context, int index, String bankName, String i
                       child: Text(
                         date,
                         style: const TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w400),
+                            fontSize: 15, fontWeight: FontWeight.w400),
                       ),
                     ),
                   ),
@@ -128,8 +132,7 @@ Widget returnCaseItem(BuildContext context, int index, String bankName, String i
                       child: Text(
                         phone,
                         style: const TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w400),
+                            fontSize: 15, fontWeight: FontWeight.w400),
                       ),
                     ),
                   ),
@@ -150,15 +153,13 @@ Widget returnCaseItem(BuildContext context, int index, String bankName, String i
                       child: Text(
                         address,
                         style: const TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w400),
+                            fontSize: 15, fontWeight: FontWeight.w400),
                       ),
                     ),
                   ),
                 ],
               ),
             ),
-
           ],
         ),
       ),

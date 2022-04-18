@@ -1,9 +1,7 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:property_valuation/ui/questionnaire.dart';
@@ -17,6 +15,7 @@ class VisitDetail extends StatefulWidget {
   @override
   _VisitDetailState createState() => _VisitDetailState();
 }
+
 List latitudes = [];
 List longitudes = [];
 Map visitMap = {};
@@ -26,6 +25,7 @@ void getCaseDetail(Map map, String caseid, String name) {
   visitMap = map;
   caseId = caseid;
   customerName = name;
+  print("This is map ${map["dateOfInspection"]}");
 }
 
 class _VisitDetailState extends State<VisitDetail> {
@@ -37,8 +37,7 @@ class _VisitDetailState extends State<VisitDetail> {
           latitudes[index],
           longitudes[index],
         ),
-        infoWindow: InfoWindow(title: AppConstant.list[index]["title"])
-    );
+        infoWindow: InfoWindow(title: AppConstant.list[index]["title"]));
   });
   _launchPhoneURL(String phoneNumber) async {
     String url = 'tel:' + phoneNumber;
@@ -159,9 +158,11 @@ class _VisitDetailState extends State<VisitDetail> {
     }
 
     List contacts = ['', ''];
-    print(customerName);
+    log("These are contacts==> $contacts");
     contacts = visitMap['contactNo'];
-    Timestamp timestamp = visitMap['dateOfInspection'];
+    Timestamp timestamp = visitMap['dateOfInspection'].toString() == ""
+        ? Timestamp(40, 40)
+        : visitMap['dateOfInspection'];
     DateTime dateTime =
         DateTime.fromMicrosecondsSinceEpoch(timestamp.microsecondsSinceEpoch);
     String dateOfInspection = dateTime.day.toString() +
@@ -175,7 +176,7 @@ class _VisitDetailState extends State<VisitDetail> {
         dateTime.minute.toString() +
         ':' +
         dateTime.second.toString();
-    String customerPhone = contacts[0];
+    String customerPhone = contacts.toString();
     if (contacts.length > 1) {
       customerPhone = customerPhone + ' / ' + contacts[1];
     }
@@ -215,7 +216,9 @@ class _VisitDetailState extends State<VisitDetail> {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
                         child: Text(
-                          visitMap['bankName'],
+                          visitMap['bankName'] == ""
+                              ? ""
+                              : visitMap['bankName'],
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
                         ),
@@ -319,9 +322,11 @@ class _VisitDetailState extends State<VisitDetail> {
                                           zoomGesturesEnabled: true,
                                           myLocationEnabled: true,
                                           zoomControlsEnabled: true,
-                                          initialCameraPosition: CameraPosition(target: LatLng(lat!,
-                                              lon!), zoom: 10),
-                                          onMapCreated: (GoogleMapController controller) {
+                                          initialCameraPosition: CameraPosition(
+                                              target: LatLng(lat!, lon!),
+                                              zoom: 10),
+                                          onMapCreated:
+                                              (GoogleMapController controller) {
                                             _controller.complete(controller);
                                           },
                                           markers: Set.from(_markers),
