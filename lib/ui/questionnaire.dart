@@ -270,28 +270,28 @@ class _QuestionnaireState extends State<Questionnaire>
     }
   }
 
-  Future<String> uploadPic(BuildContext context) async {
-    if (_image == null) {
-      return "";
-    } else {
-      String filename = basename(_image.path);
-      firebase_storage.Reference ref =
-          firebase_storage.FirebaseStorage.instance.ref().child(filename);
-      /*await firebase_storage.FirebaseStorage.instance
-              .ref(filename)
-              .putFile(_image);*/
-      firebase_storage.UploadTask task = firebase_storage
-          .FirebaseStorage.instance
-          .ref()
-          .child('propertyImages/$filename')
-          .putFile(_image);
-      var downUrl =
-          await (await task.whenComplete(() => null)).ref.getDownloadURL();
-      url = downUrl.toString();
-      print(url);
-      return url;
-    }
-  }
+  // Future<String> uploadPic(BuildContext context) async {
+  //   if (_image == null) {
+  //     return "";
+  //   } else {
+  //     String filename = basename(_image.path);
+  //     firebase_storage.Reference ref =
+  //         firebase_storage.FirebaseStorage.instance.ref().child(filename);
+  //     /*await firebase_storage.FirebaseStorage.instance
+  //             .ref(filename)
+  //             .putFile(_image);*/
+  //     firebase_storage.UploadTask task = firebase_storage
+  //         .FirebaseStorage.instance
+  //         .ref()
+  //         .child('propertyImages/$filename')
+  //         .putFile(_image);
+  //     var downUrl =
+  //         await (await task.whenComplete(() => null)).ref.getDownloadURL();
+  //     url = downUrl.toString();
+  //     print(url);
+  //     return url;
+  //   }
+  // }
 
   TextEditingController documentController = TextEditingController(text: '');
   bool dataAdded = false;
@@ -391,7 +391,7 @@ class _QuestionnaireState extends State<Questionnaire>
     Future getImage() async {
       FilePickerResult? image = await FilePicker.platform.pickFiles(
         type: FileType.custom,
-        allowedExtensions: ['pdf', 'jpg'],
+        allowedExtensions: ['pdf', 'jpg', 'png'],
       );
       if (image != null) {
         setState(() {
@@ -4148,22 +4148,23 @@ class _QuestionnaireState extends State<Questionnaire>
                                               fontFamily: "BonaNova"),
                                         )),
                                     FlatButton(
-                                        onPressed: () {
-                                          getCaseId(caseId);
-                                          Navigator.pop(context);
-                                          Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    SaleComparable()),
-                                          );
-                                        },
-                                        child: Text(
-                                          "Yes",
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontFamily: "BonaNova"),
-                                        ))
+                                      onPressed: () {
+                                        getCaseId(caseId);
+                                        Navigator.pop(context);
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  SaleComparable()),
+                                        );
+                                      },
+                                      child: Text(
+                                        "Yes",
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontFamily: "BonaNova"),
+                                      ),
+                                    )
                                   ],
                                 ),
                               );
