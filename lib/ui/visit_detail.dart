@@ -138,7 +138,7 @@ class _VisitDetailState extends State<VisitDetail> {
                   style: TextStyle(color: Colors.black, fontFamily: "BonaNova"),
                 ),
               ),
-              FlatButton(
+              TextButton(
                 onPressed: () {
                   setVisitPostponed();
                   final snackBar = SnackBar(content: Text('Visit Postponed'));
