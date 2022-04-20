@@ -60,6 +60,7 @@ dependencies:
   geolocator: ^8.0.0
   flutter_google_places: ^0.3.0
   convert: ^3.0.1
+  image_cropper: ^1.5.1
 
 
 

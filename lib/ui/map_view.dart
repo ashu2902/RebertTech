@@ -43,6 +43,7 @@ class _MapViewState extends State<MapView> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     final applicationBloc = Provider.of<ApplicationBloc>(context);
     return SafeArea(
       child: Scaffold(
@@ -69,18 +70,32 @@ class _MapViewState extends State<MapView> {
             child: ElevatedButton(
               onPressed: () {
                 setState(() {
+<<<<<<< HEAD
                   location =
                       "${applicationBloc.selectedLocationStatic.geometry.location.lat.toString()},${applicationBloc.selectedLocationStatic.geometry.location.lng.toString()}/ ${applicationBloc.selectedLocationStatic.name}";
+=======
+                  location = applicationBloc
+                          .selectedLocationStatic.geometry.location.lat
+                          .toString() +
+                      applicationBloc
+                          .selectedLocationStatic.geometry.location.lng
+                          .toString();
+>>>>>>> Tanmay
                   lati = applicationBloc
                       .selectedLocationStatic.geometry.location.lat
                       .toString();
                   longi = applicationBloc
                       .selectedLocationStatic.geometry.location.lng
                       .toString();
+<<<<<<< HEAD
                   salelocationcontroller1 =
                       TextEditingController(text: location.split('/').first);
                   salelocationcontroller2 =
                       TextEditingController(text: location.split('/').last);
+=======
+                  salelocationcontroller =
+                      TextEditingController(text: location);
+>>>>>>> Tanmay
                   address = applicationBloc.selectedLocationStatic.name;
                   vicinity = applicationBloc.selectedLocationStatic.vicinity;
                   //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>SaleComparable()));
@@ -92,9 +107,16 @@ class _MapViewState extends State<MapView> {
           ),
           Stack(
             children: [
+<<<<<<< HEAD
               Container(
                 height: 700.0,
                 child: GoogleMap(
+=======
+              SizedBox(
+                height: size.height * 0.83,
+                child: GoogleMap(
+                  myLocationButtonEnabled: true,
+>>>>>>> Tanmay
                   mapType: MapType.normal,
                   zoomGesturesEnabled: true,
                   myLocationEnabled: true,

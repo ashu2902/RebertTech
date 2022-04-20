@@ -34,8 +34,12 @@ void getCaseId(String caseIdo) {
 String location = '';
 String latitude = '';
 String longitude = '';
+<<<<<<< HEAD
 TextEditingController salelocationcontroller1 = TextEditingController(text: '');
 TextEditingController salelocationcontroller2 = TextEditingController(text: '');
+=======
+TextEditingController salelocationcontroller = TextEditingController(text: '');
+>>>>>>> Tanmay
 
 class _SaleComparableState extends State<SaleComparable> {
   var uuid = const Uuid();
@@ -51,6 +55,7 @@ class _SaleComparableState extends State<SaleComparable> {
   String unitHolder = '';
   String holder = '';
   String sourceDetails = '';
+  String address = '';
   String saleDetails = '';
   String transactionDetails = '';
   int _user = 0;
@@ -257,6 +262,37 @@ class _SaleComparableState extends State<SaleComparable> {
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: TextField(
+                    keyboardType: TextInputType.multiline,
+                    onChanged: (value) {
+                      address = value;
+                    },
+                    decoration: const InputDecoration(
+                      hintText: 'Address',
+                      labelText: 'Address',
+                      filled: true,
+                      fillColor: Colors.white,
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: 20.0, horizontal: 20.0),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white, width: 1.0),
+                        borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                        borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   height: 60,
@@ -366,7 +402,7 @@ class _SaleComparableState extends State<SaleComparable> {
                               .map(
                                 (String value) => DropdownMenuItem<String>(
                                   value: value,
-                                  child: new Text(
+                                  child: Text(
                                     value,
                                     style: const TextStyle(
                                         color: Colors.black, fontSize: 14),
@@ -690,6 +726,10 @@ class _SaleComparableState extends State<SaleComparable> {
                         'location': location,
                         'propertyType': dropdownValue,
                         'landArea': landArea,
+<<<<<<< HEAD
+=======
+                        'address': address,
+>>>>>>> Tanmay
                         'landAreaUnit': unitValue,
                         'landRate': landrate,
                         'landRateUnit': landrateUnit,

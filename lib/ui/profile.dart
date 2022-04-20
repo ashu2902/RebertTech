@@ -1,4 +1,3 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -30,8 +29,8 @@ class _ProfileState extends State<Profile> {
       aadharNo = '',
       religion = '',
       state = '';
-  late TextEditingController
-  namecontroller = TextEditingController(text: fname),
+  late TextEditingController namecontroller =
+          TextEditingController(text: fname),
       emailcontroller = TextEditingController(text: email),
       phn1cont = TextEditingController(text: phone1),
       phn2cont = TextEditingController(text: phone2),
@@ -69,7 +68,7 @@ class _ProfileState extends State<Profile> {
 
   void getProfileData() async {
     await for (var snapshot
-    in FirebaseFirestore.instance.collection('Users').snapshots()) {
+        in FirebaseFirestore.instance.collection('Users').snapshots()) {
       for (var message in snapshot.docs) {}
     }
   }
@@ -82,7 +81,6 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-
     return StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection('Users').snapshots(),
         builder: (context, snapshot) {
@@ -100,12 +98,10 @@ class _ProfileState extends State<Profile> {
               fname = message.get('name');
               email = message.get('email');
               List contact = message.get('contactNo');
-              if(contact.length>1)
-              {
+              if (contact.length > 1) {
                 phone2 = contact[1];
               }
-              phone1 = contact[0] ;
-
+              phone1 = contact[0];
             }
           }
           return Scaffold(
@@ -134,19 +130,19 @@ class _ProfileState extends State<Profile> {
                               vertical: 20.0, horizontal: 20.0),
                           border: OutlineInputBorder(
                             borderRadius:
-                            BorderRadius.all(Radius.circular(20.0)),
+                                BorderRadius.all(Radius.circular(20.0)),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderSide:
-                            BorderSide(color: Colors.white, width: 1.0),
+                                BorderSide(color: Colors.white, width: 1.0),
                             borderRadius:
-                            BorderRadius.all(Radius.circular(20.0)),
+                                BorderRadius.all(Radius.circular(20.0)),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderSide:
-                            BorderSide(color: Colors.blue, width: 2.0),
+                                BorderSide(color: Colors.blue, width: 2.0),
                             borderRadius:
-                            BorderRadius.all(Radius.circular(20.0)),
+                                BorderRadius.all(Radius.circular(20.0)),
                           ),
                         ),
                       ),
@@ -170,19 +166,19 @@ class _ProfileState extends State<Profile> {
                               vertical: 20.0, horizontal: 20.0),
                           border: OutlineInputBorder(
                             borderRadius:
-                            BorderRadius.all(Radius.circular(20.0)),
+                                BorderRadius.all(Radius.circular(20.0)),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderSide:
-                            BorderSide(color: Colors.white, width: 1.0),
+                                BorderSide(color: Colors.white, width: 1.0),
                             borderRadius:
-                            BorderRadius.all(Radius.circular(20.0)),
+                                BorderRadius.all(Radius.circular(20.0)),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderSide:
-                            BorderSide(color: Colors.blue, width: 2.0),
+                                BorderSide(color: Colors.blue, width: 2.0),
                             borderRadius:
-                            BorderRadius.all(Radius.circular(20.0)),
+                                BorderRadius.all(Radius.circular(20.0)),
                           ),
                         ),
                       ),
@@ -209,19 +205,19 @@ class _ProfileState extends State<Profile> {
                               vertical: 20.0, horizontal: 20.0),
                           border: OutlineInputBorder(
                             borderRadius:
-                            BorderRadius.all(Radius.circular(20.0)),
+                                BorderRadius.all(Radius.circular(20.0)),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderSide:
-                            BorderSide(color: Colors.white, width: 1.0),
+                                BorderSide(color: Colors.white, width: 1.0),
                             borderRadius:
-                            BorderRadius.all(Radius.circular(20.0)),
+                                BorderRadius.all(Radius.circular(20.0)),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderSide:
-                            BorderSide(color: Colors.blue, width: 2.0),
+                                BorderSide(color: Colors.blue, width: 2.0),
                             borderRadius:
-                            BorderRadius.all(Radius.circular(20.0)),
+                                BorderRadius.all(Radius.circular(20.0)),
                           ),
                         ),
                       ),
@@ -248,19 +244,19 @@ class _ProfileState extends State<Profile> {
                               vertical: 20.0, horizontal: 20.0),
                           border: OutlineInputBorder(
                             borderRadius:
-                            BorderRadius.all(Radius.circular(20.0)),
+                                BorderRadius.all(Radius.circular(20.0)),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderSide:
-                            BorderSide(color: Colors.white, width: 1.0),
+                                BorderSide(color: Colors.white, width: 1.0),
                             borderRadius:
-                            BorderRadius.all(Radius.circular(20.0)),
+                                BorderRadius.all(Radius.circular(20.0)),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderSide:
-                            BorderSide(color: Colors.blue, width: 2.0),
+                                BorderSide(color: Colors.blue, width: 2.0),
                             borderRadius:
-                            BorderRadius.all(Radius.circular(20.0)),
+                                BorderRadius.all(Radius.circular(20.0)),
                           ),
                         ),
                       ),
@@ -281,7 +277,6 @@ class _ProfileState extends State<Profile> {
                           );
                         }
                         final messages = snapshot.data!.docs;
-
                         for (var message in messages) {
                           address = message.get('address');
                           state = message.get('state');
@@ -290,15 +285,13 @@ class _ProfileState extends State<Profile> {
                           latitude = message.get('latitude');
                           locality = message.get('locality');
                           longitude = message.get('longitude');
-
                         }
-
                         return Container(
                           child: Column(
                             children: [
                               Padding(
                                 padding:
-                                const EdgeInsets.fromLTRB(30, 20, 30, 10),
+                                    const EdgeInsets.fromLTRB(30, 20, 30, 10),
                                 child: SizedBox(
                                   width: MediaQuery.of(context).size.width,
                                   child: TextFormField(
@@ -337,7 +330,7 @@ class _ProfileState extends State<Profile> {
                               ),
                               Padding(
                                 padding:
-                                const EdgeInsets.fromLTRB(30, 20, 30, 10),
+                                    const EdgeInsets.fromLTRB(30, 20, 30, 10),
                                 child: SizedBox(
                                   width: MediaQuery.of(context).size.width,
                                   child: TextFormField(
@@ -376,7 +369,7 @@ class _ProfileState extends State<Profile> {
                               ),
                               Padding(
                                 padding:
-                                const EdgeInsets.fromLTRB(30, 20, 30, 10),
+                                    const EdgeInsets.fromLTRB(30, 20, 30, 10),
                                 child: SizedBox(
                                   width: MediaQuery.of(context).size.width,
                                   child: TextFormField(
@@ -415,7 +408,7 @@ class _ProfileState extends State<Profile> {
                               ),
                               Padding(
                                 padding:
-                                const EdgeInsets.fromLTRB(30, 20, 30, 10),
+                                    const EdgeInsets.fromLTRB(30, 20, 30, 10),
                                 child: SizedBox(
                                   width: MediaQuery.of(context).size.width,
                                   child: TextFormField(
@@ -454,7 +447,7 @@ class _ProfileState extends State<Profile> {
                               ),
                               Padding(
                                 padding:
-                                const EdgeInsets.fromLTRB(30, 20, 30, 10),
+                                    const EdgeInsets.fromLTRB(30, 20, 30, 10),
                                 child: SizedBox(
                                   width: MediaQuery.of(context).size.width,
                                   child: TextFormField(
@@ -515,15 +508,20 @@ class _ProfileState extends State<Profile> {
                           Timestamp birth = message.get('dateOfBirth');
                           maritalStatus = message.get('maritalStatus');
                           religion = message.get('religion');
-                          var date = DateTime.fromMicrosecondsSinceEpoch(birth.microsecondsSinceEpoch);
-                          birthday = date.year.toString()+'-'+ date.month.toString()+'-'+ date.day.toString();
+                          var date = DateTime.fromMicrosecondsSinceEpoch(
+                              birth.microsecondsSinceEpoch);
+                          birthday = date.year.toString() +
+                              '-' +
+                              date.month.toString() +
+                              '-' +
+                              date.day.toString();
                         }
                         return Container(
                           child: Column(
                             children: [
                               Padding(
                                 padding:
-                                const EdgeInsets.fromLTRB(30, 20, 30, 10),
+                                    const EdgeInsets.fromLTRB(30, 20, 30, 10),
                                 child: SizedBox(
                                   width: MediaQuery.of(context).size.width,
                                   child: TextFormField(
@@ -562,7 +560,7 @@ class _ProfileState extends State<Profile> {
                               ),
                               Padding(
                                 padding:
-                                const EdgeInsets.fromLTRB(30, 20, 30, 10),
+                                    const EdgeInsets.fromLTRB(30, 20, 30, 10),
                                 child: SizedBox(
                                   width: MediaQuery.of(context).size.width,
                                   child: TextFormField(
@@ -601,7 +599,7 @@ class _ProfileState extends State<Profile> {
                               ),
                               Padding(
                                 padding:
-                                const EdgeInsets.fromLTRB(30, 20, 30, 10),
+                                    const EdgeInsets.fromLTRB(30, 20, 30, 10),
                                 child: SizedBox(
                                   width: MediaQuery.of(context).size.width,
                                   child: TextFormField(
@@ -640,7 +638,7 @@ class _ProfileState extends State<Profile> {
                               ),
                               Padding(
                                 padding:
-                                const EdgeInsets.fromLTRB(30, 20, 30, 10),
+                                    const EdgeInsets.fromLTRB(30, 20, 30, 10),
                                 child: SizedBox(
                                   width: MediaQuery.of(context).size.width,
                                   child: TextFormField(
@@ -695,24 +693,27 @@ class _ProfileState extends State<Profile> {
                         ),
                         onPressed: () async {
                           bool emailValid = RegExp(
-                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                               .hasMatch(email);
-                          fname=namecontroller.value.text;
-                          email=emailcontroller.value.text;
-                          phone1=phn1cont.value.text;
-                          phone2=phn2cont.value.text;
-                          address=addresscont.value.text;
-                          district=distcont.value.text;
-                          locality=localcont.value.text;
-                          state=statecont.value.text;
-                          pincode=pincont.value.text;
-                          maritalStatus=maritalcont.value.text;
-                          birthday=birthcont.value.text;
-                          aadharNo=aadharcont.value.text;
-                          religion=religioncont.value.text;
-                          var contaact = {phone1, phone2} ;
-                          DateTime somedate = DateTime.parse(birthday+' 00:00:00');
-                          Timestamp datee = Timestamp.fromMicrosecondsSinceEpoch(somedate.microsecondsSinceEpoch);
+                          fname = namecontroller.value.text;
+                          email = emailcontroller.value.text;
+                          phone1 = phn1cont.value.text;
+                          phone2 = phn2cont.value.text;
+                          address = addresscont.value.text;
+                          district = distcont.value.text;
+                          locality = localcont.value.text;
+                          state = statecont.value.text;
+                          pincode = pincont.value.text;
+                          maritalStatus = maritalcont.value.text;
+                          birthday = birthcont.value.text;
+                          aadharNo = aadharcont.value.text;
+                          religion = religioncont.value.text;
+                          var contaact = {phone1, phone2};
+                          DateTime somedate =
+                              DateTime.parse(birthday + ' 00:00:00');
+                          Timestamp datee =
+                              Timestamp.fromMicrosecondsSinceEpoch(
+                                  somedate.microsecondsSinceEpoch);
                           print(datee.toString());
                           if (namecontroller.value.text.isEmpty) {
                             const snackBar = SnackBar(
@@ -735,14 +736,14 @@ class _ProfileState extends State<Profile> {
                           } else if (phn1cont.value.text == '') {
                             const snackBar = SnackBar(
                                 content:
-                                Text('Please enter a valid phone number'));
+                                    Text('Please enter a valid phone number'));
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(snackBar);
                             return;
                           } else if (phn2cont.value.text == '') {
                             const snackBar = SnackBar(
                                 content:
-                                Text('Please enter a valid phone number'));
+                                    Text('Please enter a valid phone number'));
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(snackBar);
                             return;
@@ -792,7 +793,7 @@ class _ProfileState extends State<Profile> {
                           } else if (aadharcont.value.text.isEmpty) {
                             const snackBar = SnackBar(
                                 content:
-                                Text('Please enter a valid aadhar number'));
+                                    Text('Please enter a valid aadhar number'));
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(snackBar);
                             return;
@@ -838,7 +839,7 @@ class _ProfileState extends State<Profile> {
                         child: const Text(
                           "Submit",
                           style:
-                          TextStyle(fontSize: 18, fontFamily: "BonaNova"),
+                              TextStyle(fontSize: 18, fontFamily: "BonaNova"),
                         ),
                       ),
                     ),
