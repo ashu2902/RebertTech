@@ -176,7 +176,7 @@ class _VisitDetailState extends State<VisitDetail> {
         dateTime.minute.toString() +
         ':' +
         dateTime.second.toString();
-    String customerPhone = contacts.toString();
+    String customerPhone = contacts[0].toString();
     if (contacts.length > 1) {
       customerPhone = customerPhone + ' / ' + contacts[1];
     }
@@ -474,6 +474,7 @@ class _VisitDetailState extends State<VisitDetail> {
                                         ),
                                         FlatButton(
                                           onPressed: () {
+                                            log(customerPhone);
                                             getVisitDetail(
                                                 visitMap['address'],
                                                 visitMap['bankBranchName'],

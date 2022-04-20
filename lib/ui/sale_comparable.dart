@@ -25,22 +25,24 @@ class SaleComparable extends StatefulWidget {
   @override
   _SaleComparableState createState() => _SaleComparableState();
 }
-String caseIdoo='';
-void getCaseId(String caseIdo){
-  caseIdoo=caseIdo;
+
+String caseIdoo = '';
+void getCaseId(String caseIdo) {
+  caseIdoo = caseIdo;
 }
+
 String location = '';
 String latitude = '';
 String longitude = '';
-TextEditingController salelocationcontroller =
-TextEditingController(text: '');
+TextEditingController salelocationcontroller = TextEditingController(text: '');
+
 class _SaleComparableState extends State<SaleComparable> {
-  var uuid = Uuid();
+  var uuid = const Uuid();
   String _locationValue = "";
   final _firestore = FirebaseFirestore.instance;
-  late File _image=File('');
+  late File _image = File('');
   String dropdownValue = '';
-  Map<String, dynamic> saleMap={};
+  Map<String, dynamic> saleMap = {};
   String unitValue = 'Sq. Ft';
   String landrate = '';
   String landrateUnit = 'Sq. Ft';
@@ -92,14 +94,18 @@ class _SaleComparableState extends State<SaleComparable> {
       landrateUnit = landrateUnit;
     });
   }
+
   Future<void> setSaleDetail() async {
     var v4 = uuid.v4();
     print(saleMap);
     var arealocref = FirebaseFirestore.instance
         .collection('Sale Comparables')
-        .doc(FirebaseAuth.instance.currentUser!.uid).collection('sale_comparable').doc(v4);
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('sale_comparable')
+        .doc(v4);
     await arealocref.set(saleMap);
   }
+
   String imagePicked = 'No images Uploaded';
   @override
   Widget build(BuildContext context) {
@@ -137,6 +143,7 @@ class _SaleComparableState extends State<SaleComparable> {
         return url;
       }
     }
+
     return GestureDetector(
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
@@ -147,14 +154,14 @@ class _SaleComparableState extends State<SaleComparable> {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text('Property Evaluation'),
+          title: const Text('Property Evaluation'),
         ),
         body: SingleChildScrollView(
           child: Column(
             children: [
-              Center(
+              const Center(
                 child: Padding(
-                  padding: const EdgeInsets.all(30.0),
+                  padding: EdgeInsets.all(30.0),
                   child: Text(
                     'Sale Comparable',
                     style: TextStyle(fontSize: 22),
@@ -174,8 +181,8 @@ class _SaleComparableState extends State<SaleComparable> {
                     decoration: InputDecoration(
                       suffixIcon: IconButton(
                         color: Colors.black,
-                        onPressed: () {
-                          Navigator.push(
+                        onPressed: () async {
+                          await Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => ChangeNotifierProvider(
@@ -190,16 +197,16 @@ class _SaleComparableState extends State<SaleComparable> {
                       labelText: 'Fetch Your Location',
                       filled: true,
                       fillColor: Colors.white,
-                      contentPadding: EdgeInsets.symmetric(
+                      contentPadding: const EdgeInsets.symmetric(
                           vertical: 20.0, horizontal: 20.0),
-                      border: OutlineInputBorder(
+                      border: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(20.0)),
                       ),
-                      enabledBorder: OutlineInputBorder(
+                      enabledBorder: const OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.white, width: 1.0),
                         borderRadius: BorderRadius.all(Radius.circular(20.0)),
                       ),
-                      focusedBorder: OutlineInputBorder(
+                      focusedBorder: const OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.blue, width: 2.0),
                         borderRadius: BorderRadius.all(Radius.circular(20.0)),
                       ),
@@ -212,7 +219,7 @@ class _SaleComparableState extends State<SaleComparable> {
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   height: 60,
-                  padding: EdgeInsets.symmetric(horizontal: 10.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
@@ -236,7 +243,7 @@ class _SaleComparableState extends State<SaleComparable> {
                               value: value,
                               child: new Text(
                                 value,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.black,
                                 ),
                               ),
@@ -297,7 +304,7 @@ class _SaleComparableState extends State<SaleComparable> {
                     child: Container(
                       width: 100,
                       height: 60,
-                      padding: EdgeInsets.symmetric(horizontal: 10.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
                       decoration: BoxDecoration(
                         color: Colors.transparent,
                         borderRadius: BorderRadius.circular(20),
@@ -320,7 +327,7 @@ class _SaleComparableState extends State<SaleComparable> {
                                   value: value,
                                   child: new Text(
                                     value,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         color: Colors.black, fontSize: 14),
                                   ),
                                 ),
@@ -350,7 +357,7 @@ class _SaleComparableState extends State<SaleComparable> {
                         onChanged: (value) {
                           landrate = value;
                         },
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: 'Land Rate',
                           labelText: 'Land Rate',
                           filled: true,
@@ -359,34 +366,34 @@ class _SaleComparableState extends State<SaleComparable> {
                               vertical: 20.0, horizontal: 20.0),
                           border: OutlineInputBorder(
                             borderRadius:
-                                BorderRadius.all(Radius.circular(20.0)),
+                                const BorderRadius.all(Radius.circular(20.0)),
                           ),
-                          enabledBorder: OutlineInputBorder(
+                          enabledBorder: const OutlineInputBorder(
                             borderSide:
                                 BorderSide(color: Colors.white, width: 1.0),
                             borderRadius:
-                                BorderRadius.all(Radius.circular(20.0)),
+                                BorderRadius.all(const Radius.circular(20.0)),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.blue, width: 2.0),
+                            borderSide: const BorderSide(
+                                color: Colors.blue, width: 2.0),
                             borderRadius:
-                                BorderRadius.all(Radius.circular(20.0)),
+                                const BorderRadius.all(Radius.circular(20.0)),
                           ),
                         ),
                       ),
                     ),
                   ),
-                  Text(
+                  const Text(
                     '/',
-                    style: TextStyle(fontSize: 18),
+                    style: const TextStyle(fontSize: 18),
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                     child: Container(
                       width: 100,
                       height: 60,
-                      padding: EdgeInsets.symmetric(horizontal: 10.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
                       decoration: BoxDecoration(
                         color: Colors.transparent,
                         borderRadius: BorderRadius.circular(20),
@@ -410,7 +417,7 @@ class _SaleComparableState extends State<SaleComparable> {
                                   value: value,
                                   child: new Text(
                                     value,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         color: Colors.black, fontSize: 14),
                                   ),
                                 ),
@@ -527,7 +534,7 @@ class _SaleComparableState extends State<SaleComparable> {
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height / 4,
-                  padding: EdgeInsets.symmetric(horizontal: 10.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
@@ -538,9 +545,9 @@ class _SaleComparableState extends State<SaleComparable> {
                   ),
                   child: Column(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Icon(
+                      const Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child: const Icon(
                           Icons.camera_alt_outlined,
                           color: Colors.blue,
                           size: 50,
@@ -559,7 +566,7 @@ class _SaleComparableState extends State<SaleComparable> {
                           onPressed: () async {
                             await getImage();
                           },
-                          child: Text(
+                          child: const Text(
                             "Add",
                             style:
                                 TextStyle(fontSize: 14, fontFamily: "BonaNova"),
@@ -599,33 +606,35 @@ class _SaleComparableState extends State<SaleComparable> {
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         return;
                       } else if (dropdownValue == 'Select a Property Type') {
-                        final snackBar = SnackBar(
+                        final snackBar = const SnackBar(
                             content:
                                 Text('Please enter a valid property type'));
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         return;
                       } else if (landArea.isEmpty) {
-                        final snackBar = SnackBar(
-                            content: Text('Please enter valid land area'));
+                        final snackBar = const SnackBar(
+                            content:
+                                const Text('Please enter valid land area'));
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         return;
                       } else if (landrate.isEmpty) {
-                        final snackBar = SnackBar(
+                        final snackBar = const SnackBar(
                             content: Text('Please enter a valid land rate'));
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         return;
                       } else if (sourceDetails.isEmpty) {
-                        final snackBar = SnackBar(
+                        final snackBar = const SnackBar(
                             content: Text('Please enter valid source details'));
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         return;
                       } else if (saleDetails.isEmpty) {
-                        final snackBar = SnackBar(
-                            content: Text('Please enter valid sale details'));
+                        final snackBar = const SnackBar(
+                            content:
+                                const Text('Please enter valid sale details'));
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         return;
                       } else if (transactionDetails.isEmpty) {
-                        final snackBar = SnackBar(
+                        final snackBar = const SnackBar(
                             content:
                                 Text('Please enter valid transaction details'));
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -633,20 +642,20 @@ class _SaleComparableState extends State<SaleComparable> {
                       }
                       showLoaderDialog(context);
 
-                        downloadURL = await uploadPic(context);
-                      
-                      saleMap={
-                        'caseId':caseIdoo,
-                        'location':location,
-                        'propertyType':dropdownValue,
+                      downloadURL = await uploadPic(context);
+
+                      saleMap = {
+                        'caseId': caseIdoo,
+                        'location': location,
+                        'propertyType': dropdownValue,
                         'landArea': landArea,
-                        'landAreaUnit':unitValue,
+                        'landAreaUnit': unitValue,
                         'landRate': landrate,
                         'landRateUnit': landrateUnit,
                         'sourceDetails': sourceDetails,
                         'saleDetails': saleDetails,
-                        'transactionDetails':transactionDetails,
-                        'doc':downloadURL
+                        'transactionDetails': transactionDetails,
+                        'doc': downloadURL
                       };
 
                       setSaleDetail();

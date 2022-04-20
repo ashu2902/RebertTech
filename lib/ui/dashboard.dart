@@ -226,7 +226,7 @@ class _DashboardState extends State<Dashboard> {
                             names[i]['fullName'] +
                             ', ';
                       }
-                      names.clear();
+
                       contacts = eachList[index]['contactNo'];
                       Timestamp timestamp =
                           eachList[index]['dateOfInspection'] == ""

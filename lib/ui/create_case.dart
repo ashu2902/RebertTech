@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -17,19 +18,20 @@ class CreateCase extends StatefulWidget {
   @override
   _CreateCaseState createState() => _CreateCaseState();
 }
-String lati='';
-String longi ='';
-String address='';
-String vicinity='';
+
+String lati = '';
+String longi = '';
+String address = '';
+String vicinity = '';
+
 class _CreateCaseState extends State<CreateCase> {
   var uuid = Uuid();
   int borrowers = 5;
   String contact = '';
-  List<String> contacts =[];
+  List<String> contacts = [];
   List<Map<String, String>> borrowerNames = [];
   List<String> prefixes = [];
-  String
-      fullName = '',
+  String fullName = '',
       title = '',
       caseStatus = 'NotAssigned',
       district = '',
@@ -51,9 +53,14 @@ class _CreateCaseState extends State<CreateCase> {
   int employee = 0;
   String bankEmployeeName = '';
   List<String> bankEmployeeNames = [];
-  int purpose =0;
-  final List<String> purposes =[
-    'Purpose of Valuation', 'Income Tax', 'Banking/Financial Institute', 'Banking(Auction/Settlement of Dues', 'Visa Purpose', 'Personal Purpose'
+  int purpose = 0;
+  final List<String> purposes = [
+    'Purpose of Valuation',
+    'Income Tax',
+    'Banking/Financial Institute',
+    'Banking(Auction/Settlement of Dues',
+    'Visa Purpose',
+    'Personal Purpose'
   ];
   int _userr = 0;
   final List<String> _units = ['Mr.', 'Miss', 'Mrs.'];
@@ -71,46 +78,46 @@ class _CreateCaseState extends State<CreateCase> {
     "Vehicle"
   ];
   String selectedDate = '';
+  late DateTime date;
+  final TextEditingController _fullNameController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   TextEditingController pinController = TextEditingController();
   TextEditingController stateController = TextEditingController();
   TextEditingController districtController = TextEditingController();
   TextEditingController localityController = TextEditingController();
 
-  Map<String, dynamic> caseMap ={};
+  Map<String, dynamic> caseMap = {};
   Future<void> createNewCase() async {
     var v4 = uuid.v4();
-    var visitref = FirebaseFirestore.instance
-        .collection('Cases')
-        .doc(v4);
+    var visitref = FirebaseFirestore.instance.collection('Cases').doc(v4);
     await visitref.set(caseMap);
   }
 
   @override
   Widget build(BuildContext context) {
-
     setState(() {
       address;
       vicinity;
       addressController.text = address;
-      String temp='';
+      String temp = '';
       List<String> elephantList = address.split(",");
-      
-      if(elephantList.length>2){
+
+      if (elephantList.length > 2) {
         print(elephantList);
-        temp=elephantList[elephantList.length-2];
+        temp = elephantList[elephantList.length - 2];
       }
 
       List<String> statePin = temp.split(' ');
       print(statePin);
-      if(statePin.length>1){
+      if (statePin.length > 1) {
         state = statePin[1];
         stateController.text = state;
-        pincode =statePin[2];
+        pincode = statePin[1];
       }
 
-      pinController.text=pincode;
-      locality=vicinity;
+      pinController.text = pincode;
+      locality = vicinity;
       localityController.text = locality;
     });
     void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
@@ -121,6 +128,7 @@ class _CreateCaseState extends State<CreateCase> {
             _date.month.toString() +
             '/' +
             _date.year.toString();
+        date = _date;
         Navigator.pop(context);
       });
     }
@@ -312,7 +320,7 @@ class _CreateCaseState extends State<CreateCase> {
                                 fontSize: 12, fontWeight: FontWeight.w300),
                           ),
                         ),
-                        Text('$selectedDate'),
+                        Text(selectedDate),
                       ],
                     ),
                     Column(
@@ -418,6 +426,7 @@ class _CreateCaseState extends State<CreateCase> {
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width / 2,
                     child: TextField(
+                      controller: _fullNameController,
                       keyboardType: TextInputType.text,
                       onChanged: (value) {
                         fullName = value;
@@ -450,13 +459,14 @@ class _CreateCaseState extends State<CreateCase> {
                   padding: const EdgeInsets.all(8.0),
                   child: IconButton(
                     icon: Icon(Icons.add),
-                    onPressed: () {
+                    onPressed: () async {
                       if (fullName.isNotEmpty) {
                         setState(() {
-                          borrowerNames.add({'title':title, 'fullName': fullName});
+                          borrowerNames
+                              .add({'title': title, 'fullName': fullName});
                         });
-                        
                       }
+                      _fullNameController.clear();
                     },
                   ),
                 ),
@@ -464,48 +474,42 @@ class _CreateCaseState extends State<CreateCase> {
             ),
             Container(
               child: ListView.builder(
-                itemCount: borrowerNames.length,
+                  itemCount: borrowerNames.length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.fromLTRB(
-                      15, 5, 15, 0),
-                  child: Card(
-                    child: Container(
-                      child: Padding(
-                        padding:
-                        const EdgeInsets.fromLTRB(
-                            15, 0, 15, 0),
-                        child: Row(
-                          mainAxisAlignment:
-                          MainAxisAlignment
-                              .spaceBetween,
-                          children: [
-                            Flexible(
-                              child: Text(
-                                  '${borrowerNames[index]['title']} ${borrowerNames[index]['fullName']}'),
+                    return Padding(
+                      padding: const EdgeInsets.fromLTRB(15, 5, 15, 0),
+                      child: Card(
+                        child: Container(
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                      '${borrowerNames[index]['title']} ${borrowerNames[index]['fullName']}'),
+                                ),
+                                Flexible(
+                                  child: IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          borrowerNames.removeAt(index);
+                                        });
+                                      },
+                                      icon: Icon(
+                                        Icons.delete_outline_outlined,
+                                        size: 20,
+                                        color: Colors.blue,
+                                      )),
+                                ),
+                              ],
                             ),
-                            Flexible(
-                              child: IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      borrowerNames.removeAt(index);
-                                    });
-                                  },
-                                  icon: Icon(
-                                    Icons
-                                        .delete_outline_outlined,
-                                    size: 20,
-                                    color: Colors.blue,
-                                  )),
-                            ),
-                          ],
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                );
-              }),
+                    );
+                  }),
             ),
             Row(
               children: [
@@ -514,6 +518,7 @@ class _CreateCaseState extends State<CreateCase> {
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width / 1.6,
                     child: TextField(
+                      controller: _phoneController,
                       keyboardType: TextInputType.phone,
                       onChanged: (value) {
                         contact = value;
@@ -530,12 +535,12 @@ class _CreateCaseState extends State<CreateCase> {
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderSide:
-                          BorderSide(color: Colors.white, width: 1.0),
+                              BorderSide(color: Colors.white, width: 1.0),
                           borderRadius: BorderRadius.all(Radius.circular(20.0)),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderSide:
-                          BorderSide(color: Colors.blue, width: 2.0),
+                              BorderSide(color: Colors.blue, width: 2.0),
                           borderRadius: BorderRadius.all(Radius.circular(20.0)),
                         ),
                       ),
@@ -551,8 +556,8 @@ class _CreateCaseState extends State<CreateCase> {
                         setState(() {
                           contacts.add(contact);
                         });
-
                       }
+                      _phoneController.clear();
                     },
                   ),
                 ),
@@ -564,35 +569,26 @@ class _CreateCaseState extends State<CreateCase> {
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     return Padding(
-                      padding: const EdgeInsets.fromLTRB(
-                          15, 5, 15, 0),
+                      padding: const EdgeInsets.fromLTRB(15, 5, 15, 0),
                       child: Card(
                         child: Container(
                           child: Padding(
-                            padding:
-                            const EdgeInsets.fromLTRB(
-                                15, 0, 15, 0),
+                            padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                             child: Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment
-                                  .spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Flexible(
-                                  child: Text(
-                                      '${contacts[index]}'),
+                                  child: Text('${contacts[index]}'),
                                 ),
                                 Flexible(
                                   child: IconButton(
                                       onPressed: () {
                                         setState(() {
-                                          contacts
-                                              .removeAt(
-                                              index);
+                                          contacts.removeAt(index);
                                         });
                                       },
                                       icon: Icon(
-                                        Icons
-                                            .delete_outline_outlined,
+                                        Icons.delete_outline_outlined,
                                         size: 20,
                                         color: Colors.blue,
                                       )),
@@ -604,7 +600,7 @@ class _CreateCaseState extends State<CreateCase> {
                       ),
                     );
                   }),
-            ) ,
+            ),
             Padding(
               padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
               child: SizedBox(
@@ -620,23 +616,18 @@ class _CreateCaseState extends State<CreateCase> {
                     labelText: 'Address',
                     filled: true,
                     fillColor: Colors.white,
-                    contentPadding: EdgeInsets.symmetric(
-                        vertical: 20.0, horizontal: 20.0),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
                     border: OutlineInputBorder(
-                      borderRadius:
-                      BorderRadius.all(Radius.circular(20.0)),
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Colors.white, width: 1.0),
-                      borderRadius:
-                      BorderRadius.all(Radius.circular(20.0)),
+                      borderSide: BorderSide(color: Colors.white, width: 1.0),
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Colors.blue, width: 2.0),
-                      borderRadius:
-                      BorderRadius.all(Radius.circular(20.0)),
+                      borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
                     ),
                   ),
                 ),
@@ -657,23 +648,18 @@ class _CreateCaseState extends State<CreateCase> {
                     labelText: 'district',
                     filled: true,
                     fillColor: Colors.white,
-                    contentPadding: EdgeInsets.symmetric(
-                        vertical: 20.0, horizontal: 20.0),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
                     border: OutlineInputBorder(
-                      borderRadius:
-                      BorderRadius.all(Radius.circular(20.0)),
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Colors.white, width: 1.0),
-                      borderRadius:
-                      BorderRadius.all(Radius.circular(20.0)),
+                      borderSide: BorderSide(color: Colors.white, width: 1.0),
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Colors.blue, width: 2.0),
-                      borderRadius:
-                      BorderRadius.all(Radius.circular(20.0)),
+                      borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
                     ),
                   ),
                 ),
@@ -694,23 +680,18 @@ class _CreateCaseState extends State<CreateCase> {
                     labelText: 'State',
                     filled: true,
                     fillColor: Colors.white,
-                    contentPadding: EdgeInsets.symmetric(
-                        vertical: 20.0, horizontal: 20.0),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
                     border: OutlineInputBorder(
-                      borderRadius:
-                      BorderRadius.all(Radius.circular(20.0)),
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Colors.white, width: 1.0),
-                      borderRadius:
-                      BorderRadius.all(Radius.circular(20.0)),
+                      borderSide: BorderSide(color: Colors.white, width: 1.0),
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Colors.blue, width: 2.0),
-                      borderRadius:
-                      BorderRadius.all(Radius.circular(20.0)),
+                      borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
                     ),
                   ),
                 ),
@@ -731,23 +712,18 @@ class _CreateCaseState extends State<CreateCase> {
                     labelText: 'Pincode',
                     filled: true,
                     fillColor: Colors.white,
-                    contentPadding: EdgeInsets.symmetric(
-                        vertical: 20.0, horizontal: 20.0),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
                     border: OutlineInputBorder(
-                      borderRadius:
-                      BorderRadius.all(Radius.circular(20.0)),
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Colors.white, width: 1.0),
-                      borderRadius:
-                      BorderRadius.all(Radius.circular(20.0)),
+                      borderSide: BorderSide(color: Colors.white, width: 1.0),
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Colors.blue, width: 2.0),
-                      borderRadius:
-                      BorderRadius.all(Radius.circular(20.0)),
+                      borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
                     ),
                   ),
                 ),
@@ -768,23 +744,18 @@ class _CreateCaseState extends State<CreateCase> {
                     labelText: 'Locality',
                     filled: true,
                     fillColor: Colors.white,
-                    contentPadding: EdgeInsets.symmetric(
-                        vertical: 20.0, horizontal: 20.0),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
                     border: OutlineInputBorder(
-                      borderRadius:
-                      BorderRadius.all(Radius.circular(20.0)),
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Colors.white, width: 1.0),
-                      borderRadius:
-                      BorderRadius.all(Radius.circular(20.0)),
+                      borderSide: BorderSide(color: Colors.white, width: 1.0),
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Colors.blue, width: 2.0),
-                      borderRadius:
-                      BorderRadius.all(Radius.circular(20.0)),
+                      borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
                     ),
                   ),
                 ),
@@ -804,23 +775,18 @@ class _CreateCaseState extends State<CreateCase> {
                     labelText: 'Job Branch',
                     filled: true,
                     fillColor: Colors.white,
-                    contentPadding: EdgeInsets.symmetric(
-                        vertical: 20.0, horizontal: 20.0),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
                     border: OutlineInputBorder(
-                      borderRadius:
-                      BorderRadius.all(Radius.circular(20.0)),
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Colors.white, width: 1.0),
-                      borderRadius:
-                      BorderRadius.all(Radius.circular(20.0)),
+                      borderSide: BorderSide(color: Colors.white, width: 1.0),
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Colors.blue, width: 2.0),
-                      borderRadius:
-                      BorderRadius.all(Radius.circular(20.0)),
+                      borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
                     ),
                   ),
                 ),
@@ -840,23 +806,18 @@ class _CreateCaseState extends State<CreateCase> {
                     labelText: 'Loan Account Number',
                     filled: true,
                     fillColor: Colors.white,
-                    contentPadding: EdgeInsets.symmetric(
-                        vertical: 20.0, horizontal: 20.0),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
                     border: OutlineInputBorder(
-                      borderRadius:
-                      BorderRadius.all(Radius.circular(20.0)),
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Colors.white, width: 1.0),
-                      borderRadius:
-                      BorderRadius.all(Radius.circular(20.0)),
+                      borderSide: BorderSide(color: Colors.white, width: 1.0),
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Colors.blue, width: 2.0),
-                      borderRadius:
-                      BorderRadius.all(Radius.circular(20.0)),
+                      borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
                     ),
                   ),
                 ),
@@ -887,14 +848,14 @@ class _CreateCaseState extends State<CreateCase> {
                     items: purposes
                         .map(
                           (String value) => DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(
-                          value,
-                          style: const TextStyle(
-                              color: Colors.black, fontSize: 14),
-                        ),
-                      ),
-                    )
+                            value: value,
+                            child: Text(
+                              value,
+                              style: const TextStyle(
+                                  color: Colors.black, fontSize: 14),
+                            ),
+                          ),
+                        )
                         .toList(),
                     isExpanded: true,
                     onChanged: (value) {
@@ -921,23 +882,18 @@ class _CreateCaseState extends State<CreateCase> {
                     labelText: 'Instructions',
                     filled: true,
                     fillColor: Colors.white,
-                    contentPadding: EdgeInsets.symmetric(
-                        vertical: 20.0, horizontal: 20.0),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
                     border: OutlineInputBorder(
-                      borderRadius:
-                      BorderRadius.all(Radius.circular(20.0)),
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Colors.white, width: 1.0),
-                      borderRadius:
-                      BorderRadius.all(Radius.circular(20.0)),
+                      borderSide: BorderSide(color: Colors.white, width: 1.0),
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Colors.blue, width: 2.0),
-                      borderRadius:
-                      BorderRadius.all(Radius.circular(20.0)),
+                      borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
                     ),
                   ),
                 ),
@@ -956,6 +912,7 @@ class _CreateCaseState extends State<CreateCase> {
                     ),
                   ),
                   onPressed: () async {
+                    log(selectedDate.toString());
                     if (lati.isEmpty) {
                       const snackBar = SnackBar(
                           content: Text('Please enter a valid location'));
@@ -963,40 +920,37 @@ class _CreateCaseState extends State<CreateCase> {
                       return;
                     } else if (propertyType.isEmpty) {
                       const snackBar = SnackBar(
-                          content:
-                          Text('Please enter a valid property type'));
+                          content: Text('Please enter a valid property type'));
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       return;
                     } else if (propertyType == 'Select a Property Type') {
                       final snackBar = SnackBar(
-                          content:
-                          Text('Please enter a valid property type'));
+                          content: Text('Please enter a valid property type'));
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       return;
                     }
-                    caseMap={
+                    caseMap = {
                       'bankName': bankName,
                       'bankBranchName': bankBranchName,
-                      'bankEmployeeName':bankEmployeeName,
-                      'address':address,
-                      'borrowerNames':borrowerNames,
+                      'bankEmployeeName': bankEmployeeName,
+                      'address': address,
+                      'borrowerNames': borrowerNames,
                       'caseStatus': 'Not Assigned',
                       'contactNo': contacts,
-                      'dateOfInspection': dateOfInspection,
+                      'dateOfInspection': date,
                       'district': district,
                       'instructions': instructions,
                       'jobBranch': jobBranch,
-                      'latitude':double.parse(lati),
+                      'latitude': double.parse(lati),
                       'loanAcNo': loanAcNo,
-                      'locality':localityController.text,
-                      'longitude':double.parse(longi),
-                      'pincode':pincode,
-                      'purposeOfValuation':purposeOfValuation,
-                      'state':state,
-                      'typeOfAsset':propertyType
+                      'locality': localityController.text,
+                      'longitude': double.parse(longi),
+                      'pincode': pincode,
+                      'purposeOfValuation': purposeOfValuation,
+                      'state': state,
+                      'typeOfAsset': propertyType
                     };
                     createNewCase();
-
 
                     const snackBar = SnackBar(
                       content: Text('Submitted Successfully!'),
@@ -1014,7 +968,9 @@ class _CreateCaseState extends State<CreateCase> {
                 ),
               ),
             ),
-            const SizedBox(height: 100,),
+            const SizedBox(
+              height: 100,
+            ),
           ],
         ),
       ),

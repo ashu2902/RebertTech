@@ -518,6 +518,7 @@ class _QuestionnaireState extends State<Questionnaire>
                     advance = message.get('advance');
                     print(advance);
                     contactNo = message.get('contactNo');
+                    print("This is contact number$contactNo");
                     bank = message.get('bankName');
                     branch = message.get('bankBranch');
                     valuationReportOf = message.get('valuationReportOf');
