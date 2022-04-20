@@ -227,20 +227,6 @@ class _SaleComparableState extends State<SaleComparable> {
                           location = value;
                         },
                         decoration: const InputDecoration(
-                          // suffixIcon: IconButton(
-                          //   color: Colors.black,
-                          //   onPressed: () async {
-                          //     await Navigator.push(
-                          //       context,
-                          //       MaterialPageRoute(
-                          //         builder: (context) => ChangeNotifierProvider(
-                          //             create: (context) => ApplicationBloc(),
-                          //             child: const MapView()),
-                          //       ),
-                          //     );
-                          //   },
-                          //   icon: const Icon(Icons.location_searching_outlined),
-                          // ),
                           hintText: 'Location',
                           labelText: 'Your Address',
                           filled: true,
