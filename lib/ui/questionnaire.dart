@@ -294,28 +294,29 @@ class _QuestionnaireState extends State<Questionnaire>
     return null;
   }
 
-  // Future<String> uploadPic(BuildContext context) async {
-  //   if (_image == null) {
-  //     return "";
-  //   } else {
-  //     String filename = basename(_image.path);
-  //     firebase_storage.Reference ref =
-  //         firebase_storage.FirebaseStorage.instance.ref().child(filename);
-  //     /*await firebase_storage.FirebaseStorage.instance
-  //             .ref(filename)
-  //             .putFile(_image);*/
-  //     firebase_storage.UploadTask task = firebase_storage
-  //         .FirebaseStorage.instance
-  //         .ref()
-  //         .child('propertyImages/$filename')
-  //         .putFile(_image);
-  //     var downUrl =
-  //         await (await task.whenComplete(() => null)).ref.getDownloadURL();
-  //     url = downUrl.toString();
-  //     print(url);
-  //     return url;
-  //   }
-  // }
+  Future<String> uploadPic(BuildContext context) async {
+    if (_image == null) {
+      return "";
+    } else {
+      String filename = basename(_image.path);
+      firebase_storage.Reference ref =
+          firebase_storage.FirebaseStorage.instance.ref().child(filename);
+      /*await firebase_storage.FirebaseStorage.instance
+              .ref(filename)
+              .putFile(_image);*/
+      final userID = FirebaseAuth.instance.currentUser!.uid;
+      firebase_storage.UploadTask task = firebase_storage
+          .FirebaseStorage.instance
+          .ref()
+          .child('propertyImages/$userID/$filename')
+          .putFile(_image);
+      var downUrl =
+          await (await task.whenComplete(() => null)).ref.getDownloadURL();
+      url = downUrl.toString();
+      print(url);
+      return url;
+    }
+  }
 
   TextEditingController documentController = TextEditingController(text: '');
   bool dataAdded = false;

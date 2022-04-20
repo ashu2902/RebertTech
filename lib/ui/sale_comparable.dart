@@ -34,12 +34,8 @@ void getCaseId(String caseIdo) {
 String location = '';
 String latitude = '';
 String longitude = '';
-<<<<<<< HEAD
 TextEditingController salelocationcontroller1 = TextEditingController(text: '');
 TextEditingController salelocationcontroller2 = TextEditingController(text: '');
-=======
-TextEditingController salelocationcontroller = TextEditingController(text: '');
->>>>>>> Tanmay
 
 class _SaleComparableState extends State<SaleComparable> {
   var uuid = const Uuid();
@@ -726,10 +722,6 @@ class _SaleComparableState extends State<SaleComparable> {
                         'location': location,
                         'propertyType': dropdownValue,
                         'landArea': landArea,
-<<<<<<< HEAD
-=======
-                        'address': address,
->>>>>>> Tanmay
                         'landAreaUnit': unitValue,
                         'landRate': landrate,
                         'landRateUnit': landrateUnit,
