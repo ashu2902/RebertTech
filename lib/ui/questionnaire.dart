@@ -2705,8 +2705,10 @@ class _QuestionnaireState extends State<Questionnaire>
                                 'loanAcNo': loanAcNo,
                                 'otherDetails': extraInfo4,
                               };
-                              setValuationDetail();
-                              _tabController.animateTo(4);
+                              setValuationDetail().then((value) {
+                                Navigator.pop(context);
+                                _tabController.animateTo(4);
+                              });
                             }
                           },
                           child: Text('Save and Continue'),

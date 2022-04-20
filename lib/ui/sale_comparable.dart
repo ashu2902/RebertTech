@@ -34,7 +34,8 @@ void getCaseId(String caseIdo) {
 String location = '';
 String latitude = '';
 String longitude = '';
-TextEditingController salelocationcontroller = TextEditingController(text: '');
+TextEditingController salelocationcontroller1 = TextEditingController(text: '');
+TextEditingController salelocationcontroller2 = TextEditingController(text: '');
 
 class _SaleComparableState extends State<SaleComparable> {
   var uuid = const Uuid();
@@ -172,45 +173,99 @@ class _SaleComparableState extends State<SaleComparable> {
                 padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width,
-                  child: TextFormField(
-                    controller: salelocationcontroller,
-                    keyboardType: TextInputType.streetAddress,
-                    onChanged: (value) {
-                      location = value;
-                    },
-                    decoration: InputDecoration(
-                      suffixIcon: IconButton(
-                        color: Colors.black,
-                        onPressed: () async {
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ChangeNotifierProvider(
-                                  create: (context) => ApplicationBloc(),
-                                  child: const MapView()),
-                            ),
-                          );
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        controller: salelocationcontroller1,
+                        keyboardType: TextInputType.streetAddress,
+                        onChanged: (value) {
+                          location = value;
                         },
-                        icon: const Icon(Icons.location_searching_outlined),
+                        decoration: InputDecoration(
+                          suffixIcon: IconButton(
+                            color: Colors.black,
+                            onPressed: () async {
+                              await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ChangeNotifierProvider(
+                                      create: (context) => ApplicationBloc(),
+                                      child: const MapView()),
+                                ),
+                              );
+                            },
+                            icon: const Icon(Icons.location_searching_outlined),
+                          ),
+                          hintText: 'Location',
+                          labelText: 'Fetch Your Location',
+                          filled: true,
+                          fillColor: Colors.white,
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 20.0, horizontal: 20.0),
+                          border: const OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20.0)),
+                          ),
+                          enabledBorder: const OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.white, width: 1.0),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20.0)),
+                          ),
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.blue, width: 2.0),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20.0)),
+                          ),
+                        ),
                       ),
-                      hintText: 'Location',
-                      labelText: 'Fetch Your Location',
-                      filled: true,
-                      fillColor: Colors.white,
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 20.0, horizontal: 20.0),
-                      border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                      TextFormField(
+                        controller: salelocationcontroller2,
+                        keyboardType: TextInputType.streetAddress,
+                        onChanged: (value) {
+                          location = value;
+                        },
+                        decoration: const InputDecoration(
+                          // suffixIcon: IconButton(
+                          //   color: Colors.black,
+                          //   onPressed: () async {
+                          //     await Navigator.push(
+                          //       context,
+                          //       MaterialPageRoute(
+                          //         builder: (context) => ChangeNotifierProvider(
+                          //             create: (context) => ApplicationBloc(),
+                          //             child: const MapView()),
+                          //       ),
+                          //     );
+                          //   },
+                          //   icon: const Icon(Icons.location_searching_outlined),
+                          // ),
+                          hintText: 'Location',
+                          labelText: 'Your Address',
+                          filled: true,
+                          fillColor: Colors.white,
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 20.0, horizontal: 20.0),
+                          border: const OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20.0)),
+                          ),
+                          enabledBorder: const OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.white, width: 1.0),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20.0)),
+                          ),
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.blue, width: 2.0),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20.0)),
+                          ),
+                        ),
                       ),
-                      enabledBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white, width: 1.0),
-                        borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                      ),
-                      focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue, width: 2.0),
-                        borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                      ),
-                    ),
+                    ],
                   ),
                 ),
               ),

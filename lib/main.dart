@@ -62,10 +62,10 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       if (FirebaseAuth.instance.currentUser != null) {
         Timer(
-          Duration(seconds: 0),
+          const Duration(seconds: 0),
           () => Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Dashboard()),
+            MaterialPageRoute(builder: (context) => const Dashboard()),
           ),
         );
       }
@@ -79,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Property Evaluation'),
+        title: const Text('Property Evaluation'),
       ),
       body: Container(
         child: Center(
@@ -162,14 +162,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => ForgotPassword()));
+                          builder: (context) => const ForgotPassword()));
                 },
-                child: Text(
+                child: const Text(
                   'Forgot Password?',
                   style: TextStyle(fontSize: 15.0, color: Colors.blue),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               SizedBox(
@@ -191,26 +191,26 @@ class _MyHomePageState extends State<MyHomePage> {
                             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                         .hasMatch(email);
                     if (email.isEmpty) {
-                      final snackBar = SnackBar(
-                          content: Text('Please enter a valid email ID'));
+                      final snackBar = const SnackBar(
+                          content: const Text('Please enter a valid email ID'));
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       return;
                     }
                     if (!emailValid) {
-                      final snackBar = SnackBar(
+                      final snackBar = const SnackBar(
                           content: Text('Please enter a valid email ID'));
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       return;
                     }
                     if (password.isEmpty) {
-                      final snackBar = SnackBar(
-                          content: Text('Please enter a valid password'));
+                      final snackBar = const SnackBar(
+                          content: const Text('Please enter a valid password'));
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       return;
                     }
                     //if password length less than 6
                     if (password.length < 6) {
-                      final snackBar = SnackBar(
+                      final snackBar = const SnackBar(
                           content:
                               Text('Length of password must be minimum 6'));
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -224,7 +224,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Dashboard(),
+                          builder: (context) => const Dashboard(),
                         ),
                       );
                     } else {
@@ -232,21 +232,21 @@ class _MyHomePageState extends State<MyHomePage> {
                       return showDialog(
                         context: context,
                         builder: (ctx) => AlertDialog(
-                          title: Text("Error"),
-                          content: Text("Wrong username or password"),
+                          title: const Text("Error"),
+                          content: const Text("Wrong username or password"),
                           actions: <Widget>[
                             // ignore: deprecated_member_use
                             FlatButton(
                                 onPressed: () {
                                   Navigator.of(ctx).pop();
                                 },
-                                child: Text("Ok"))
+                                child: const Text("Ok"))
                           ],
                         ),
                       );
                     }
                   },
-                  child: Text(
+                  child: const Text(
                     "Login",
                     style: TextStyle(fontSize: 20, fontFamily: "BonaNova"),
                   ),
@@ -262,13 +262,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
 showLoaderDialog(BuildContext context) {
   AlertDialog alert = AlertDialog(
-    content: new Row(
+    content: Row(
       children: [
-        CircularProgressIndicator(
+        const CircularProgressIndicator(
             valueColor: AlwaysStoppedAnimation<Color>(Colors.black)),
         Container(
-          margin: EdgeInsets.only(left: 7),
-          child: Text("   Please wait..."),
+          margin: const EdgeInsets.only(left: 7),
+          child: const Text("   Please wait..."),
         ),
       ],
     ),

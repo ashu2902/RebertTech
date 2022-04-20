@@ -70,15 +70,17 @@ class _MapViewState extends State<MapView> {
               onPressed: () {
                 setState(() {
                   location =
-                      "${applicationBloc.selectedLocationStatic.geometry.location.lat.toString()},${applicationBloc.selectedLocationStatic.geometry.location.lng.toString()}";
+                      "${applicationBloc.selectedLocationStatic.geometry.location.lat.toString()},${applicationBloc.selectedLocationStatic.geometry.location.lng.toString()}/ ${applicationBloc.selectedLocationStatic.name}";
                   lati = applicationBloc
                       .selectedLocationStatic.geometry.location.lat
                       .toString();
                   longi = applicationBloc
                       .selectedLocationStatic.geometry.location.lng
                       .toString();
-                  salelocationcontroller =
-                      TextEditingController(text: location);
+                  salelocationcontroller1 =
+                      TextEditingController(text: location.split('/').first);
+                  salelocationcontroller2 =
+                      TextEditingController(text: location.split('/').last);
                   address = applicationBloc.selectedLocationStatic.name;
                   vicinity = applicationBloc.selectedLocationStatic.vicinity;
                   //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>SaleComparable()));
