@@ -1,11 +1,9 @@
-import 'dart:ui';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:image_cropper/image_cropper.dart';
 
 import 'package:path/path.dart';
 import 'package:property_valuation/ui/sale_comparable.dart';
@@ -14,6 +12,7 @@ import 'package:property_valuation/ui/visit_detail.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
+import '../helpers/image_helper.dart';
 import '../main.dart';
 
 class Questionnaire extends StatefulWidget {
@@ -110,6 +109,18 @@ void getVisitDetail(
 
 class _QuestionnaireState extends State<Questionnaire>
     with SingleTickerProviderStateMixin {
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(vsync: this, length: 5);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
   late TabController _tabController;
   final List<String> typesOfStairs = [
     'type of stairs',
@@ -246,8 +257,11 @@ class _QuestionnaireState extends State<Questionnaire>
   late Map<String, dynamic> valuationDetailMap = {};
   late Map<String, dynamic> propertyDetails = {};
   late File _image;
-  late String url, documentName = '';
-  late String downloadURL = '';
+  late String url, documentName = typesOfDocuments[0];
+  List<String> downloadURL = [];
+  String imagePicked = 'No images Uploaded';
+  DateTime _selectedYear = DateTime.now();
+
   void getDropDownItem() {
     setState(() {
       unitHolder = unitValue;
@@ -258,16 +272,26 @@ class _QuestionnaireState extends State<Questionnaire>
     });
   }
 
-  Future getImage() async {
-    PickedFile? image =
-        await ImagePicker().getImage(source: ImageSource.gallery);
-    if (image != null) {
-      setState(() {
-        _image = File(image.path);
-        String filename = basename(_image.path);
-        imagePicked = filename;
-      });
+  Future<String?> _selectImage(BuildContext context) async {
+    final pickedFile = await ImageHelper.pickFromGallery(
+        context: context, cropStyle: CropStyle.rectangle, title: "Image");
+    if (pickedFile != null) {
+      String filename = basename(pickedFile.path);
+      firebase_storage.Reference ref =
+          firebase_storage.FirebaseStorage.instance.ref().child(filename);
+      final userId = FirebaseAuth.instance.currentUser!.uid;
+      firebase_storage.UploadTask task = firebase_storage
+          .FirebaseStorage.instance
+          .ref()
+          .child('propertyImages/$userId/$filename')
+          .putFile(pickedFile);
+      var downUrl =
+          await (await task.whenComplete(() => null)).ref.getDownloadURL();
+      url = downUrl.toString();
+      print(url);
+      return url;
     }
+    return null;
   }
 
   Future<String> uploadPic(BuildContext context) async {
@@ -283,12 +307,18 @@ class _QuestionnaireState extends State<Questionnaire>
       firebase_storage.UploadTask task = firebase_storage
           .FirebaseStorage.instance
           .ref()
-          .child('propertyImages/$filename')
+          .child('$caseId/$filename')
           .putFile(_image);
       var downUrl =
           await (await task.whenComplete(() => null)).ref.getDownloadURL();
-      url = downUrl.toString();
-      print(url);
+      setState(() {
+        url = downUrl.toString();
+        documentController.clear();
+        documents.add(url);
+        documentNames.add(documentName);
+        _image.delete();
+      });
+
       return url;
     }
   }
@@ -372,75 +402,36 @@ class _QuestionnaireState extends State<Questionnaire>
     return dataAdded;
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _tabController = new TabController(vsync: this, length: 5);
+  void _onSelectionChanged(
+      DateRangePickerSelectionChangedArgs args, BuildContext context) {
+    setState(() {
+      DateTime _date = args.value;
+      selectedDate = _date.day.toString() +
+          '/' +
+          _date.month.toString() +
+          '/' +
+          _date.year.toString();
+      Navigator.pop(context);
+    });
   }
 
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
-
-  String imagePicked = 'No images Uploaded';
-  DateTime _selectedYear = DateTime.now();
-  @override
-  Widget build(BuildContext context) {
-    Future getImage() async {
-      FilePickerResult? image = await FilePicker.platform.pickFiles(
-        type: FileType.custom,
-        allowedExtensions: ['pdf', 'jpg'],
-      );
-      if (image != null) {
-        setState(() {
-          String? path = image.files.single.path;
-          _image = File(path!);
-          String filename = basename(_image.path);
-          imagePicked = filename;
-        });
-      }
-    }
-
-    Future<String> uploadPic(BuildContext context) async {
-      if (_image == null) {
-        return "";
-      } else {
-        String filename = basename(_image.path);
-        firebase_storage.Reference ref =
-            firebase_storage.FirebaseStorage.instance.ref().child(filename);
-        /*await firebase_storage.FirebaseStorage.instance
-              .ref(filename)
-              .putFile(_image);*/
-        firebase_storage.UploadTask task = firebase_storage
-            .FirebaseStorage.instance
-            .ref()
-            .child('$caseId/$filename')
-            .putFile(_image);
-        var downUrl =
-            await (await task.whenComplete(() => null)).ref.getDownloadURL();
-        setState(() {
-          url = downUrl.toString();
-        });
-
-        print(url);
-        return url;
-      }
-    }
-
-    void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
+  Future getImage() async {
+    FilePickerResult? image = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+    if (image != null) {
       setState(() {
-        DateTime _date = args.value;
-        selectedDate = _date.day.toString() +
-            '/' +
-            _date.month.toString() +
-            '/' +
-            _date.year.toString();
-        Navigator.pop(context);
+        String? path = image.files.single.path;
+        _image = File(path!);
+        String filename = basename(_image.path);
+        imagePicked = filename;
       });
     }
+  }
 
+  @override
+  Widget build(BuildContext context) {
     _selectDate(BuildContext context) async {
       showDialog(
         context: context,
@@ -451,7 +442,7 @@ class _QuestionnaireState extends State<Questionnaire>
             height: MediaQuery.of(context).size.height / 2,
             child: Center(
               child: SfDateRangePicker(
-                onSelectionChanged: _onSelectionChanged,
+                onSelectionChanged: (val) => _onSelectionChanged(val, context),
                 selectionMode: DateRangePickerSelectionMode.single,
                 enablePastDates: true,
                 maxDate: DateTime.now(),
@@ -544,7 +535,7 @@ class _QuestionnaireState extends State<Questionnaire>
                           child: SizedBox(
                             width: MediaQuery.of(context).size.width,
                             child: TextFormField(
-                              initialValue: '$advance',
+                              initialValue: advance,
                               keyboardType: TextInputType.number,
                               onChanged: (value) {
                                 advance = value;
@@ -1753,9 +1744,7 @@ class _QuestionnaireState extends State<Questionnaire>
                                             child: DropdownButton(
                                               focusColor: Colors.blue,
                                               dropdownColor: Colors.white,
-                                              value: doc == null
-                                                  ? null
-                                                  : typesOfDocuments[doc],
+                                              value: typesOfDocuments[doc],
                                               underline: Container(
                                                 height: 0,
                                               ),
@@ -1813,16 +1802,7 @@ class _QuestionnaireState extends State<Questionnaire>
                                         return;
                                       } else {
                                         await getImage();
-                                        await uploadPic(context)
-                                            .whenComplete(() {
-                                          if (url.isNotEmpty) {
-                                            setState(() {
-                                              documentController.clear();
-                                              documents.add(url);
-                                              documentNames.add(documentName);
-                                            });
-                                          }
-                                        });
+                                        await uploadPic(context);
                                       }
                                       print(documents);
                                     },
@@ -1965,11 +1945,15 @@ class _QuestionnaireState extends State<Questionnaire>
                                                 Padding(
                                                   padding: const EdgeInsets.all(
                                                       10.0),
-                                                  child: Icon(
-                                                    Icons.camera_alt_outlined,
-                                                    color: Colors.blue,
-                                                    size: 50,
-                                                  ),
+                                                  child: downloadURL.isEmpty
+                                                      ? const Icon(
+                                                          Icons
+                                                              .camera_alt_outlined,
+                                                          color: Colors.blue,
+                                                          size: 50,
+                                                        )
+                                                      : _buildImagesCard(
+                                                          context),
                                                 ),
                                                 SizedBox(
                                                   width: MediaQuery.of(context)
@@ -1992,7 +1976,14 @@ class _QuestionnaireState extends State<Questionnaire>
                                                       ),
                                                     ),
                                                     onPressed: () async {
-                                                      await getImage();
+                                                      final url =
+                                                          await _selectImage(
+                                                              context);
+                                                      print('++++++++++$url');
+                                                      url != null
+                                                          ? downloadURL.add(url)
+                                                          : null;
+                                                      setState(() {});
                                                     },
                                                     child: Text(
                                                       "Add",
@@ -2001,17 +1992,6 @@ class _QuestionnaireState extends State<Questionnaire>
                                                           fontFamily:
                                                               "BonaNova"),
                                                     ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsets.all(
-                                                      15.0),
-                                                  child: Row(
-                                                    children: [
-                                                      Flexible(
-                                                          child: Text(
-                                                              '$imagePicked')),
-                                                    ],
                                                   ),
                                                 ),
                                               ],
@@ -2329,7 +2309,6 @@ class _QuestionnaireState extends State<Questionnaire>
                                   documentsMap[documentNames[i]] = documents[i];
                                 }
                               }
-                              downloadURL = await uploadPic(context);
                               documentsMap['images'] = downloadURL;
                               documentsMap['E'] = east;
                               documentsMap['W'] = west;
@@ -4177,6 +4156,38 @@ class _QuestionnaireState extends State<Questionnaire>
                 }),
           ],
         ),
+      ),
+    );
+  }
+
+  _buildImagesCard(BuildContext context) {
+    return Container(
+      width: 110,
+      height: 150,
+      child: ListView.separated(
+        separatorBuilder: (context, index) => Divider(thickness: 2),
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (__, index) {
+          return _buildImage(downloadURL[index], context);
+        },
+        itemCount: downloadURL.length,
+      ),
+    );
+  }
+
+  _buildImage(String url, BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        showDialog(
+            context: context,
+            builder: (_) {
+              return Image.network(url, fit: BoxFit.cover);
+            });
+      },
+      child: SizedBox(
+        height: 110,
+        width: 110,
+        child: Image.network(url, fit: BoxFit.cover),
       ),
     );
   }

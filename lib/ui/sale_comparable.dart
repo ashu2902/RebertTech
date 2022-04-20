@@ -25,22 +25,24 @@ class SaleComparable extends StatefulWidget {
   @override
   _SaleComparableState createState() => _SaleComparableState();
 }
-String caseIdoo='';
-void getCaseId(String caseIdo){
-  caseIdoo=caseIdo;
+
+String caseIdoo = '';
+void getCaseId(String caseIdo) {
+  caseIdoo = caseIdo;
 }
+
 String location = '';
 String latitude = '';
 String longitude = '';
-TextEditingController salelocationcontroller =
-TextEditingController(text: '');
+TextEditingController salelocationcontroller = TextEditingController(text: '');
+
 class _SaleComparableState extends State<SaleComparable> {
   var uuid = Uuid();
   String _locationValue = "";
   final _firestore = FirebaseFirestore.instance;
-  late File _image=File('');
+  late File _image = File('');
   String dropdownValue = '';
-  Map<String, dynamic> saleMap={};
+  Map<String, dynamic> saleMap = {};
   String unitValue = 'Sq. Ft';
   String landrate = '';
   String landrateUnit = 'Sq. Ft';
@@ -48,6 +50,7 @@ class _SaleComparableState extends State<SaleComparable> {
   String unitHolder = '';
   String holder = '';
   String sourceDetails = '';
+  String address = '';
   String saleDetails = '';
   String transactionDetails = '';
   int _user = 0;
@@ -92,14 +95,18 @@ class _SaleComparableState extends State<SaleComparable> {
       landrateUnit = landrateUnit;
     });
   }
+
   Future<void> setSaleDetail() async {
     var v4 = uuid.v4();
     print(saleMap);
     var arealocref = FirebaseFirestore.instance
         .collection('Sale Comparables')
-        .doc(FirebaseAuth.instance.currentUser!.uid).collection('sale_comparable').doc(v4);
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('sale_comparable')
+        .doc(v4);
     await arealocref.set(saleMap);
   }
+
   String imagePicked = 'No images Uploaded';
   @override
   Widget build(BuildContext context) {
@@ -137,6 +144,7 @@ class _SaleComparableState extends State<SaleComparable> {
         return url;
       }
     }
+
     return GestureDetector(
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
@@ -154,7 +162,7 @@ class _SaleComparableState extends State<SaleComparable> {
             children: [
               Center(
                 child: Padding(
-                  padding: const EdgeInsets.all(30.0),
+                  padding: EdgeInsets.all(30.0),
                   child: Text(
                     'Sale Comparable',
                     style: TextStyle(fontSize: 22),
@@ -188,6 +196,37 @@ class _SaleComparableState extends State<SaleComparable> {
                       ),
                       hintText: 'Location',
                       labelText: 'Fetch Your Location',
+                      filled: true,
+                      fillColor: Colors.white,
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: 20.0, horizontal: 20.0),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white, width: 1.0),
+                        borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                        borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: TextField(
+                    keyboardType: TextInputType.multiline,
+                    onChanged: (value) {
+                      address = value;
+                    },
+                    decoration: const InputDecoration(
+                      hintText: 'Address',
+                      labelText: 'Address',
                       filled: true,
                       fillColor: Colors.white,
                       contentPadding: EdgeInsets.symmetric(
@@ -318,7 +357,7 @@ class _SaleComparableState extends State<SaleComparable> {
                               .map(
                                 (String value) => DropdownMenuItem<String>(
                                   value: value,
-                                  child: new Text(
+                                  child: Text(
                                     value,
                                     style: TextStyle(
                                         color: Colors.black, fontSize: 14),
@@ -633,20 +672,21 @@ class _SaleComparableState extends State<SaleComparable> {
                       }
                       showLoaderDialog(context);
 
-                        downloadURL = await uploadPic(context);
-                      
-                      saleMap={
-                        'caseId':caseIdoo,
-                        'location':location,
-                        'propertyType':dropdownValue,
+                      downloadURL = await uploadPic(context);
+
+                      saleMap = {
+                        'caseId': caseIdoo,
+                        'location': location,
+                        'propertyType': dropdownValue,
                         'landArea': landArea,
-                        'landAreaUnit':unitValue,
+                        'address': address,
+                        'landAreaUnit': unitValue,
                         'landRate': landrate,
                         'landRateUnit': landrateUnit,
                         'sourceDetails': sourceDetails,
                         'saleDetails': saleDetails,
-                        'transactionDetails':transactionDetails,
-                        'doc':downloadURL
+                        'transactionDetails': transactionDetails,
+                        'doc': downloadURL
                       };
 
                       setSaleDetail();

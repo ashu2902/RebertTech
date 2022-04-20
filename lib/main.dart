@@ -1,14 +1,10 @@
 import 'dart:async';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:property_valuation/blocks/application_block.dart';
 import 'package:property_valuation/ui/dashboard.dart';
 import 'package:property_valuation/ui/forgot_pass.dart';
-import 'package:provider/provider.dart';
-
 import 'firebase/flutter-fire.dart';
 
 void main() async {
