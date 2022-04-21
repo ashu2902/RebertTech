@@ -85,7 +85,11 @@ class _MapViewState extends State<MapView> {
                       .toString();
                   salelocationcontroller =
                       TextEditingController(text: location);
-                  address = applicationBloc.selectedLocationStatic.name;
+                  salelocationcontroller1 = TextEditingController(
+                      text:
+                          "${applicationBloc.selectedLocationStatic.geometry.location.lat}/${applicationBloc.selectedLocationStatic.geometry.location.lng}");
+                  salelocationcontroller2 = TextEditingController(
+                      text: applicationBloc.selectedLocationStatic.name);
                   vicinity = applicationBloc.selectedLocationStatic.vicinity;
                   //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>SaleComparable()));
                 });

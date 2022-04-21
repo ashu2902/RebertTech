@@ -256,37 +256,37 @@ class _SaleComparableState extends State<SaleComparable> {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: TextField(
-                    keyboardType: TextInputType.multiline,
-                    onChanged: (value) {
-                      address = value;
-                    },
-                    decoration: const InputDecoration(
-                      hintText: 'Address',
-                      labelText: 'Address',
-                      filled: true,
-                      fillColor: Colors.white,
-                      contentPadding: EdgeInsets.symmetric(
-                          vertical: 20.0, horizontal: 20.0),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white, width: 1.0),
-                        borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue, width: 2.0),
-                        borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+              //   child: SizedBox(
+              //     width: MediaQuery.of(context).size.width,
+              //     child: TextField(
+              //       keyboardType: TextInputType.multiline,
+              //       onChanged: (value) {
+              //         address = value;
+              //       },
+              //       decoration: const InputDecoration(
+              //         hintText: 'Address',
+              //         labelText: 'Address',
+              //         filled: true,
+              //         fillColor: Colors.white,
+              //         contentPadding: EdgeInsets.symmetric(
+              //             vertical: 20.0, horizontal: 20.0),
+              //         border: OutlineInputBorder(
+              //           borderRadius: BorderRadius.all(Radius.circular(20.0)),
+              //         ),
+              //         enabledBorder: OutlineInputBorder(
+              //           borderSide: BorderSide(color: Colors.white, width: 1.0),
+              //           borderRadius: BorderRadius.all(Radius.circular(20.0)),
+              //         ),
+              //         focusedBorder: OutlineInputBorder(
+              //           borderSide: BorderSide(color: Colors.blue, width: 2.0),
+              //           borderRadius: BorderRadius.all(Radius.circular(20.0)),
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
                 child: Container(
@@ -314,7 +314,7 @@ class _SaleComparableState extends State<SaleComparable> {
                           .map(
                             (String value) => DropdownMenuItem<String>(
                               value: value,
-                              child: new Text(
+                              child: Text(
                                 value,
                                 style: const TextStyle(
                                   color: Colors.black,
