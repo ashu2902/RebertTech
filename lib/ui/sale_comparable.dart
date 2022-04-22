@@ -667,7 +667,7 @@ class _SaleComparableState extends State<SaleComparable> {
                       ),
                     ),
                     onPressed: () async {
-                      if (latitude.isEmpty) {
+                      if (location.isEmpty) {
                         const snackBar = SnackBar(
                             content: Text('Please enter a valid location'));
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
