@@ -304,16 +304,21 @@ class _QuestionnaireState extends State<Questionnaire>
       /*await firebase_storage.FirebaseStorage.instance
               .ref(filename)
               .putFile(_image);*/
-      final userID = FirebaseAuth.instance.currentUser!.uid;
       firebase_storage.UploadTask task = firebase_storage
           .FirebaseStorage.instance
           .ref()
-          .child('propertyImages/$userID/$filename')
+          .child('$caseId/$filename')
           .putFile(_image);
       var downUrl =
           await (await task.whenComplete(() => null)).ref.getDownloadURL();
-      url = downUrl.toString();
-      print(url);
+      setState(() {
+        url = downUrl.toString();
+        documentController.clear();
+        documents.add(url);
+        documentNames.add(documentName);
+        _image.delete();
+      });
+
       return url;
     }
   }
